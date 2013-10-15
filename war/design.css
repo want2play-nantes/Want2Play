@@ -3,12 +3,12 @@
 * {
 	margin: 0;
 	padding: 0;
-	font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
 
 html, body {
 	height: 100%;
 	min-width: 1000px;
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
 
 div#wrapper {
@@ -16,6 +16,9 @@ div#wrapper {
 	min-height: 100%;
 }
 
+/*
+ * Haut de page
+ */
 h1#logo a {
 	text-indent: -9999px;
 	display: block;
@@ -31,24 +34,32 @@ div#header {
 	padding:10px;
 }
 
-div.underConstruction {
-	height: 361px;
-	background:url("img/website_under_construction.png") no-repeat center center;
-}
-
+/*
+ * Contenu principal
+ */
 div#content {
+	position:relative;
 	padding:20px;
 	overflow:auto;
 	padding-bottom: 65px;
+} 
+
+div.underConstruction {
+	position:relative;
+	min-height: 361px;
+	background:url("img/website_under_construction.png") no-repeat center center;
 }
 
+/*
+ * Bas de page
+ */
 div#footer {
 	position: relative;
 	background-color: #303030;
 	color: #FFFFFF;
 	box-shadow: 0px -5px 20px #888888;
 	height: 45px;
-	margin-top: -45px; /* negative value of footer height */
+	margin-top: -45px;
 	height: 45px;
 	clear:both;
 }
