@@ -1,0 +1,47 @@
+@CHARSET "UTF-8";
+
+* {
+	margin: 0px;
+	padding: 0px;
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+#wrapper {
+	background-color: #EEEEEE;
+}
+
+#header {
+	background-color: #FFFFFF;
+	height: 100px;
+	box-shadow: 0px 5px 20px #888888;
+	padding:10px;
+}
+
+#content {
+	height: 600px;
+	padding:20px;
+	background:url("img/website_under_construction.png") no-repeat center center;
+}
+
+#footer {
+	background-color: #000000;
+	color:#FFFFFF;
+	box-shadow: 0px -5px 20px #888888;
+	padding:10px;
+}
+
+.webmasters {
+	font-size: small;
+	font-weight: bold;
+}
+
+#authors {
+	display: inline;
+}
+
+#authors li {
+	font-size: small;
+	display:inline-block;
+	list-style: none;
+	margin: 0 20px;
+}
