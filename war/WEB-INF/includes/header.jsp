@@ -10,6 +10,6 @@
 <body>
 	<div id="wrapper">
 		<div id="header">
-			<h1><a href="/">Want 2 Play !</a></h1>
+			<h1 id="logo"><a href="/">Want 2 Play !</a></h1>
 		</div> <!-- End of header -->
 		<div id="content">

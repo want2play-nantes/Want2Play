@@ -7,11 +7,19 @@
 }
 
 #wrapper {
-	background-color: #EEEEEE;
+	background-image: url("img/bg_content.png");
+}
+
+#logo a {
+	text-indent: -9999px;
+	display: block;
+	height: 100px;
+	width: 800px;
+	background-image: url("img/logo_w2p.png");
 }
 
 #header {
-	background-color: #FFFFFF;
+	background-color: #303030;
 	height: 100px;
 	box-shadow: 0px 5px 20px #888888;
 	padding:10px;
@@ -24,24 +32,36 @@
 }
 
 #footer {
-	background-color: #000000;
-	color:#FFFFFF;
+	position: relative;
+	background-color: #303030;
+	color: #FFFFFF;
 	box-shadow: 0px -5px 20px #888888;
-	padding:10px;
+	padding: 10px;
+	height: 25px;
 }
 
-.webmasters {
+#authors {
+	position: absolute;
+	right: 10px;
+}
+
+#authors span {
 	font-size: small;
 	font-weight: bold;
 }
 
-#authors {
+#authors ul {
 	display: inline;
 }
 
 #authors li {
 	font-size: small;
-	display:inline-block;
+	display:inline;
 	list-style: none;
-	margin: 0 20px;
+	padding: 0 20px;
+	border-right: 2px white solid;
+}
+
+#authors li:last-child {
+	border-right: none;
 }
