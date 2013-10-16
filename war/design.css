@@ -19,6 +19,14 @@ div#wrapper {
 /*
  * Haut de page
  */
+div#header {
+	position:relative;
+	background-color: #303030;
+	height: 100px;
+	box-shadow: 0px 5px 20px #888888;
+	padding:10px;
+}
+
 h1#logo a {
 	text-indent: -9999px;
 	display: block;
@@ -27,13 +35,20 @@ h1#logo a {
 	background: url("img/logo_w2p.png") right center no-repeat;
 }
 
-div#header {
-	background-color: #303030;
-	height: 100px;
-	box-shadow: 0px 5px 20px #888888;
-	padding:10px;
+div#auth {
+	font-size: small;
+	padding: 5px;
+	position:absolute;
+	right:20px;
+	top:20px;
+	width:400px;
+	text-align: right;
+	color: white;
 }
 
+div#auth a {
+	color: white;
+}
 /*
  * Contenu principal
  */
