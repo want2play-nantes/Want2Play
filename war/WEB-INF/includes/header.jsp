@@ -22,7 +22,8 @@
 				if(UserServiceFactory.getUserService().isUserLoggedIn()) {
 					if(request.getSession(true).getAttribute("user") == null) {
 						response.sendRedirect("/Login");
-					}
+                                                //test
+                                        }
 					else {
 				%>
 					<p><a href="/Logout">Déconnexion</a></p>
