@@ -1,5 +1,6 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+<%@ page import="com.google.appengine.api.users.User" %>
 <%@ page import="com.google.appengine.api.users.UserService" %>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
 
@@ -20,16 +21,11 @@
 			<div id="auth">
 				<% 
 				if(UserServiceFactory.getUserService().isUserLoggedIn()) {
-					if(request.getSession(true).getAttribute("user") == null) {
-						response.sendRedirect("/Login");
-                                                //test
-                                        }
-					else {
 				%>
+				<%!  %>
 					<p><a href="/Logout">Déconnexion</a></p>
 					<p><b>Vous être connecté en tant que ${user.email}</b></p>
 				<%
-					}
 				} else {
 				%>
 					<p><a href="/Login">Connexion</a></p>

@@ -24,15 +24,16 @@ public class LoginServlet extends HttpServlet {
 		if (!userService.isUserLoggedIn())
 		{
 			session.setAttribute("referer", req.getHeader("Referer"));
+			
 	    	resp.sendRedirect(userService.createLoginURL("/Login"));
 	    }
 		else {
-			String refererURI = session.getAttribute("referer").toString();
-			
+			String referer = session.getAttribute("referer").toString();
 			session.removeAttribute("referer");
+			
 			session.setAttribute("user", userService.getCurrentUser());
 			
-			resp.sendRedirect(refererURI);
+			resp.sendRedirect(referer);
 		}
 	}
 }
