@@ -65,6 +65,20 @@ div.underConstruction {
 	background:url("img/website_under_construction.png") no-repeat center center;
 }
 
+div#events li {
+	display:block;
+	margin:10px;
+}
+
+div#events p {
+	font-size:10pt;
+}
+
+div#events h3 {
+	font-size:12pt;
+	margin-left:20px;
+}
+
 /*
  * Bas de page
  */

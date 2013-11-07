@@ -6,7 +6,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -19,21 +18,13 @@ public class LoginServlet extends HttpServlet {
 			throws ServletException, IOException
 	{
 		UserService userService = UserServiceFactory.getUserService();
-		HttpSession session = req.getSession(true);
 		
 		if (!userService.isUserLoggedIn())
 		{
-			session.setAttribute("referer", req.getHeader("Referer"));
-			
-	    	resp.sendRedirect(userService.createLoginURL("/Login"));
+	    	resp.sendRedirect(userService.createLoginURL(req.getHeader("Referer")));
 	    }
 		else {
-			String referer = session.getAttribute("referer").toString();
-			session.removeAttribute("referer");
-			
-			session.setAttribute("user", userService.getCurrentUser());
-			
-			resp.sendRedirect(referer);
+			resp.sendRedirect(req.getHeader("Referer"));
 		}
 	}
 }

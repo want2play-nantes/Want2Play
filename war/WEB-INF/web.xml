@@ -5,6 +5,14 @@ xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 
+	<display-name>
+		Want2Play
+	</display-name>
+	
+	<description>
+		Réseau social de rencontre sportive.
+	</description>
+
 	<context-param>
     	<description>Titre de l'application</description>
     	<param-name>applicationTitle</param-name>
@@ -15,6 +23,16 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <description>ServletContextListener</description>
         <listener-class>com.want2play.servlets.ContextListener</listener-class>
     </listener>
+    
+    <filter>
+    	<description>Permet d'obtenir des informations sur le status de l'utilisateur.</description>
+        <filter-name>InfoHeaderUser</filter-name>
+        <filter-class>com.want2play.filters.InfoHeaderUser</filter-class>
+	</filter>
+	<filter-mapping>
+        	<filter-name>InfoHeaderUser</filter-name>
+        	<url-pattern>/*</url-pattern>
+	</filter-mapping>
     
     <!-- Servlets -->
 

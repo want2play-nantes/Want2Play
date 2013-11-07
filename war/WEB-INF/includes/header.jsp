@@ -1,9 +1,5 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<%@ page import="com.google.appengine.api.users.User" %>
-<%@ page import="com.google.appengine.api.users.UserService" %>
-<%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -19,18 +15,8 @@
 		<div id="header">
 			<h1 id="logo"><a href="/">${initParam['applicationTitle']}</a></h1>
 			<div id="auth">
-				<% 
-				if(UserServiceFactory.getUserService().isUserLoggedIn()) {
-				%>
-				<%!  %>
-					<p><a href="/Logout">Déconnexion</a></p>
-					<p><b>Vous être connecté en tant que ${user.email}</b></p>
-				<%
-				} else {
-				%>
-					<p><a href="/Login">Connexion</a></p>
-					<p>Vous êtes déconnecté</p>
-				<% } %>
+					<p><a href="${loginLogoutHref}">${loginLogoutButtonLabel}</a></p>
+					<p><b>${userStatus}</b></p>
 			</div>
 		</div> <!-- End of header -->
 		<div id="content">
