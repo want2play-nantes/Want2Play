@@ -15,6 +15,7 @@ public class TestServlet extends HttpServlet {
 			throws ServletException, IOException
 	{
 		getServletContext().getRequestDispatcher("/WEB-INF/test.jsp").forward(req, resp);
+	//test2
 	}
 
 	
