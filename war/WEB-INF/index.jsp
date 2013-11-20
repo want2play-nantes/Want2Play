@@ -2,8 +2,8 @@
 
 <jsp:include page="/WEB-INF/includes/header.jsp"></jsp:include>
 
-<jsp:include page="/WEB-INF/includes/events.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/includes/Subscriptions.jsp"></jsp:include>
 
-<div class="underConstruction"></div>
+<%--<div class="underConstruction"></div> --%>
 
 <jsp:include page="/WEB-INF/includes/footer.jsp"></jsp:include>
