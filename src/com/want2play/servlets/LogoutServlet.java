@@ -19,7 +19,7 @@ public class LogoutServlet extends HttpServlet {
 	{
 		UserService userService = UserServiceFactory.getUserService();
 		req.getSession().invalidate();
-		resp.sendRedirect(userService.createLogoutURL(req.getHeader("Referer")));
+		resp.sendRedirect(userService.createLogoutURL("/"));
 	}
 	
 }

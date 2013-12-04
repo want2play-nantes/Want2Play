@@ -27,17 +27,17 @@ public class Event
 	private Date date;
 	
 	@Persistent
-	private String sport;
-	
+	private Sport sport;
+
 	@Persistent
-	private Integer nbParticipants;
+	private Integer nbParticipantsMax;
 	
-	public Event(User creator, String place, Date date, String sport, Integer nbParticipants) {
+	public Event(User creator, String place, Date date, Sport sport, Integer nbParticipantsMax) {
 		this.creator = creator;
 		this.place = place;
 		this.date = date;
 		this.sport = sport;
-		this.nbParticipants = nbParticipants;
+		this.nbParticipantsMax = nbParticipantsMax;
 	}
 
 	public User getCreator() { return creator; }
@@ -48,11 +48,11 @@ public class Event
 	public Date getDate() { return date; }
 	public void setDate(Date date) { this.date = date; }
 	
-	public String getSport() { return sport; }
-	public void setSport(String sport) { this.sport = sport; }
+	public Sport getSport() { return sport; }
+	public void setSport(Sport sport) { this.sport = sport; }
 
-	public Integer getNbParticipants() { return nbParticipants; }
-	public void setNbParticipants(Integer nbParticipants) { this.nbParticipants = nbParticipants; }
+	public Integer getNbParticipantsMax() { return nbParticipantsMax; }
+	public void setNbParticipantsMax(Integer nbParticipantsMax) { this.nbParticipantsMax = nbParticipantsMax; }
 	
 	public Key getKey() { return this.key; }
 }

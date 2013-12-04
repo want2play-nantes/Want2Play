@@ -5,128 +5,76 @@
 	padding: 0;
 }
 
-html, body {
-	height: 100%;
-	min-width: 1000px;
-	font-family: "Trebuchet MS", Helvetica, sans-serif;
-}
+html, body {height: 100%;}
 
 div#wrapper {
-	background-image: url("../img/bg_content.png");
+	/*background-image: url("../img/bg_content.png");*/
+	background-image: url("http://www.hdwallpapers.in/walls/3d_bars-wide.jpg");
 	min-height: 100%;
 }
 
-/*
- * Haut de page
- */
-div#header {
+header {
 	position:relative;
-	background-color: #303030;
-	height: 100px;
-	box-shadow: 0px 5px 20px #888888;
-	padding:10px;
+	height: 50px;
 }
 
-h1#logo a {
+#logo2 {
 	text-indent: -9999px;
 	display: block;
-	height: 100px;
-	width: 540px;
-	background: url("../img/logo_w2p.png") right center no-repeat;
+	height: 75px;
+	width: 378px;
+	background: url("../img/logo_w2p.png") left center no-repeat;	
 }
 
-div#auth {
-	font-size: small;
-	padding: 5px;
-	position:absolute;
-	right:20px;
-	top:20px;
-	width:400px;
-	text-align: right;
-	color: white;
-}
-
-div#auth a {
-	color: white;
-}
 /*
  * Contenu principal
  */
+ 
+div.page-header {
+	 border-bottom: 1px solid #eeeeee;
+}
+ 
 div#content {
 	position:relative;
-	padding:20px;
 	overflow:auto;
-	padding-bottom: 65px;
+	background-color: #FFFFFF;
+	padding: 100px 30px;
+	box-shadow: 1px 1px 24px #333333;
 } 
 
-div.underConstruction {
-	position:relative;
-	min-height: 361px;
-	background:url("../img/website_under_construction.png") no-repeat center center;
+[class*="span"] {
+    float: left;
+    min-height: 1px;
 }
 
-div#events li {
-	display:block;
-	margin:10px;
+.spanSubscription {
+	width: 49.5%;
+	margin-right: 1%;
 }
 
-div#events p {
-	font-size:10pt;
+.spanCreateEvent {
+	width: 49.5%;
 }
 
-div#events h3 {
-	font-size:12pt;
-	margin-left:20px;
+/*
+ * Subscription
+ */
+div#subscription .checkbox-inline {
+	width: 200px;
 }
 
-table#subscription a {
-	text-indent: -9999px;
-	display: block;
-	height: 50px;
-	width: 54px;
-	background-repeat:no-repeat;
-	background-position: center center;
-}
 
-a.football{
-	background-image: url("../img/football.png");
-}
-
-a.footing {
-	background-image: url("../img/handball.png");
-}
-
-a.volley {
-	background-image: url("../img/volley.png");
-}
-
-a.handball {
-	background-image: url("../img/footing.png");
-}
-
-table {
- border-width:1px; 
- border-style:solid; 
- border-color:blue;
- width:50%;
- }
 /*
  * Bas de page
  */
-div#footer {
+footer {
 	position: relative;
-	background-color: #303030;
-	color: #FFFFFF;
-	box-shadow: 0px -5px 20px #888888;
-	height: 45px;
-	margin-top: -45px;
-	height: 45px;
+	height: 50px;
+	margin-top: -50px;
 	clear:both;
 }
 
-a.univ_nantes {
-	position: absolute;
-	left:10px;
+a.univ_nantes2 {
 	text-indent: -9999px;
 	display:block;
 	background: url("../img/logo_univ_nantes.png") no-repeat center center;
@@ -135,24 +83,7 @@ a.univ_nantes {
 	margin:2px;
 }
 
-div#authors {
-	position: absolute;
-	right: 10px;
-	margin:10px;
-	height:25px;
-}
-
-div#authors span {
-	font-size: small;
-	font-weight: bold;
-}
-
-div#authors ul {
-	display: inline;
-}
-
 div#authors li {
-	font-size: small;
 	display:inline;
 	list-style: none;
 	padding: 0 20px;

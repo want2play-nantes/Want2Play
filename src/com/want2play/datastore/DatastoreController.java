@@ -21,11 +21,11 @@ public class DatastoreController {
 	}
 
 	/**
-	 * Retourne true si un évènement existe déjà dans le datastore, false sinon.
+	 * Retourne true si un ï¿½vï¿½nement existe dï¿½jï¿½ dans le datastore, false sinon.
 	 * 
 	 * @param event
-	 *            évènement
-	 * @return true si l'évènement existe déjà dans le datastore, false sinon
+	 *            ï¿½vï¿½nement
+	 * @return true si l'ï¿½vï¿½nement existe dï¿½jï¿½ dans le datastore, false sinon
 	 */
 	public static boolean alreadySavedEvent(Event event)
 	{
@@ -34,7 +34,11 @@ public class DatastoreController {
 
 		try {
 			notSavedEvent = (pm.getObjectById(Event.class, event.getKey()) != null);
-		} finally {
+		}
+		catch (Exception e) {
+			return false;
+		}
+		finally {
 			pm.close();
 		}
 
@@ -42,11 +46,11 @@ public class DatastoreController {
 	}
 
 	/**
-	 * Enregistre un évènement dans le Datastore.
+	 * Enregistre un ï¿½vï¿½nement dans le Datastore.
 	 * 
 	 * @param event
-	 *            évènement à enregistrer
-	 * @return true si l'enregistrement s'est terminé avec succès, false sinon
+	 *            ï¿½vï¿½nement ï¿½ enregistrer
+	 * @return true si l'enregistrement s'est terminï¿½ avec succï¿½s, false sinon
 	 */
 	public static boolean saveEvent(Event event)
 	{
@@ -73,11 +77,11 @@ public class DatastoreController {
 	}
 
 	/**
-	 * Supprime un évènement du Datastore.
+	 * Supprime un ï¿½vï¿½nement du Datastore.
 	 * 
 	 * @param event
-	 *            évènement à suprimmer
-	 * @return true si la suppression s'est terminée avec succès, false sinon
+	 *            ï¿½vï¿½nement ï¿½ suprimmer
+	 * @return true si la suppression s'est terminï¿½e avec succï¿½s, false sinon
 	 */
 	public static boolean deleteEvent(Event event)
 	{
@@ -104,21 +108,21 @@ public class DatastoreController {
 	}
 
 	/**
-	 * Met à jour un évènement du Datastore.
+	 * Met ï¿½ jour un ï¿½vï¿½nement du Datastore.
 	 * 
 	 * @param eventToEdit
-	 *            évènement à mettre à jour
+	 *            ï¿½vï¿½nement ï¿½ mettre ï¿½ jour
 	 * @param place
-	 *            endroit de l'évènement
+	 *            endroit de l'ï¿½vï¿½nement
 	 * @param date
-	 *            date de l'évènement
+	 *            date de l'ï¿½vï¿½nement
 	 * @param sport
-	 *            sport pratiqué lors de l'évènement
+	 *            sport pratiquï¿½ lors de l'ï¿½vï¿½nement
 	 * @param nbParticipants
 	 *            nombre de participants maximum
-	 * @return true si la mise à jour s'est terminée avec succès, false sinon
+	 * @return true si la mise ï¿½ jour s'est terminï¿½e avec succï¿½s, false sinon
 	 */
-	public static boolean updateEvent(Event eventToEdit, String place, Date date, String sport, int nbParticipants)
+	public static boolean updateEvent(Event eventToEdit, String place, Date date, Sport sport, int nbParticipantsMax)
 	{
 		PersistenceManager pm = Factory.getInstance().getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
@@ -131,7 +135,7 @@ public class DatastoreController {
 			event.setPlace(place);
 			event.setDate(date);
 			event.setSport(sport);
-			event.setNbParticipants(nbParticipants);
+			event.setNbParticipantsMax(nbParticipantsMax);
 
 			tx.commit();
 		} finally {
@@ -146,9 +150,9 @@ public class DatastoreController {
 	}
 
 	/**
-	 * Retourne la liste de tous les évènements.
+	 * Retourne la liste de tous les Ã©vÃ¨nements.
 	 * 
-	 * @return la liste de tous les évènements
+	 * @return la liste de tous les Ã©vÃ¨nements
 	 */
 	@SuppressWarnings("unchecked")
 	public static List<Event> getAllEvents()
@@ -171,11 +175,11 @@ public class DatastoreController {
 	}
 
 	/**
-	 * Retourne la liste de tous les évènements crée par un utilisateur.
+	 * Retourne la liste de tous les Ã©vÃ¨nements crÃ©e par un utilisateur.
 	 * 
 	 * @param user
 	 *            utilisateur
-	 * @return la liste de tous les évènements crée par l'utilisateur
+	 * @return la liste de tous les Ã©vÃ¨nements crÃ©e par l'utilisateur
 	 */
 	@SuppressWarnings("unchecked")
 	public static List<Event> getEventsUser(User user)
@@ -198,11 +202,11 @@ public class DatastoreController {
 	}
 
 	/**
-	 * Retourne true si un utilisateur est déjà abonné, false sinon.
+	 * Retourne true si un utilisateur est dï¿½jï¿½ abonnï¿½, false sinon.
 	 * 
 	 * @param user
 	 *            utilisateur
-	 * @return true si un utilisateur est déjà abonné, false sinon
+	 * @return true si un utilisateur est dï¿½jï¿½ abonnï¿½, false sinon
 	 */
 	public static boolean isSubscribedUser(User user)
 	{
@@ -215,7 +219,7 @@ public class DatastoreController {
 
 			List<?> l = (List<?>) query.execute(user);
 
-			System.out.println("Est abonné ? " + l.size());
+			System.out.println("Est abonnï¿½ ? " + l.size());
 
 			isSubscribed = (l.size() != 0);
 		} finally {
@@ -229,8 +233,8 @@ public class DatastoreController {
 	 * Enregistre un abonnement dans le Datastore.
 	 * 
 	 * @param subs
-	 *            abonnement à enregistrer
-	 * @return true si l'enregistrement s'est terminé avec succès, false sinon
+	 *            abonnement ï¿½ enregistrer
+	 * @return true si l'enregistrement s'est terminï¿½ avec succï¿½s, false sinon
 	 */
 	public static boolean saveSubscription(Subscriptions subs)
 	{
@@ -260,8 +264,8 @@ public class DatastoreController {
 	 * Supprime un abonnement du Datastore.
 	 * 
 	 * @param subs
-	 *            abonnement à supprimer
-	 * @return true si la suppression s'est terminée avec succès, false sinon
+	 *            abonnement ï¿½ supprimer
+	 * @return true si la suppression s'est terminï¿½e avec succï¿½s, false sinon
 	 */
 	public static boolean deleteSubscription(Subscriptions subs)
 	{
@@ -291,13 +295,13 @@ public class DatastoreController {
 	}
 
 	/**
-	 * Met à jour un abonnement dans le Datastore.
+	 * Met ï¿½ jour un abonnement dans le Datastore.
 	 * 
 	 * @param subsToEdit
-	 *            abonnement à mettre à jour
+	 *            abonnement ï¿½ mettre ï¿½ jour
 	 * @param enabledSubscriptions
 	 *            liste d'abonnement
-	 * @return true si la mise à jour s'est terminée avec succès, false sinon
+	 * @return true si la mise ï¿½ jour s'est terminï¿½e avec succï¿½s, false sinon
 	 */
 	public static boolean updateSubscription(Subscriptions subsToEdit, HashMap<Sport, Boolean> enabledSubscriptions)
 	{
@@ -382,11 +386,11 @@ public class DatastoreController {
 	}
 
 	/**
-	 * Retourne la liste de tous les abonnements concernés par un sport.
+	 * Retourne la liste de tous les abonnements concernï¿½s par un sport.
 	 * 
 	 * @param sport
 	 *            sport
-	 * @return la liste de tous les abonnements concernés par le sport
+	 * @return la liste de tous les abonnements concernï¿½s par le sport
 	 */
 	public static List<User> getSubscribedUsersSport(Sport sport)
 	{
@@ -398,5 +402,9 @@ public class DatastoreController {
 		}
 
 		return subscribedUsers;
+	}
+
+	public static List<Event> getEventParticipations(User user) {
+		return new ArrayList<Event>();
 	}
 }

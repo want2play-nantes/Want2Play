@@ -52,8 +52,13 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet>
 	
 	<servlet>
-		<servlet-name>TestServlet</servlet-name>
-		<servlet-class>com.want2play.servlets.TestServlet</servlet-class>
+		<servlet-name>SubscriptionServlet</servlet-name>
+		<servlet-class>com.want2play.servlets.SubscriptionServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>EventServlet</servlet-name>
+		<servlet-class>com.want2play.servlets.EventServlet</servlet-class>
 	</servlet>
 	
 	<!-- Mapping -->
@@ -64,11 +69,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet-mapping>
 	
 	<servlet-mapping>
-		<servlet-name>TestServlet</servlet-name>
-		<url-pattern>/Test</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
 		<servlet-name>LoginServlet</servlet-name>
 		<url-pattern>/Login</url-pattern>
 	</servlet-mapping>
@@ -76,5 +76,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>LogoutServlet</servlet-name>
 		<url-pattern>/Logout</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>SubscriptionServlet</servlet-name>
+		<url-pattern>/Subscription</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>EventServlet</servlet-name>
+		<url-pattern>/Event</url-pattern>
 	</servlet-mapping>
 </web-app>

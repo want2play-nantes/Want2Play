@@ -29,14 +29,9 @@ public class InfoHeaderUser implements Filter {
 		
 		if(userService.isUserLoggedIn()) {
 			User user = userService.getCurrentUser();
-			req.setAttribute("loginLogoutHref", "/Logout");
-			req.setAttribute("loginLogoutButtonLabel", "Déconnexion");
-			req.setAttribute("userStatus", "Vous êtes connecté en tant que " + user.getNickname());
+			req.setAttribute("user", user);
 		}
 		else {
-			req.setAttribute("loginLogoutHref", "/Login");
-			req.setAttribute("loginLogoutButtonLabel", "Connexion");
-			req.setAttribute("userStatus", "Vous êtes déconnecté");
 		}
 		chain.doFilter(req, resp);
 	}
