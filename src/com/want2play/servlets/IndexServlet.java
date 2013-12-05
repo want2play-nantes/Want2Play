@@ -30,6 +30,7 @@ public class IndexServlet extends HttpServlet {
 			User user = userService.getCurrentUser();
 			
 			//DatastoreController.saveEvent(new Event(user, "La Rochelle", new Date(), Sport.FOOTBALL, 10));
+			//DatastoreController.saveEvent(new Event(user, "Nantes", new Date(), Sport.BASKETBALL, 10));
 			
 			List<Event> allUserEvents = DatastoreController.getEventsByUser(user);
 			req.setAttribute("eventUser", allUserEvents);
@@ -43,5 +44,4 @@ public class IndexServlet extends HttpServlet {
 		
 		getServletContext().getRequestDispatcher("/WEB-INF/index.jsp").forward(req, resp);
 	}
-	
 }
