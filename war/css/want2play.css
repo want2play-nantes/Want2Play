@@ -5,11 +5,10 @@
 	padding: 0;
 }
 
-html, body {height: 100%;}
+html, body { height: 100%; }
 
 div#wrapper {
-	/*background-image: url("../img/bg_content.png");*/
-	background-image: url("http://www.hdwallpapers.in/walls/3d_bars-wide.jpg");
+	background: url(../img/background.jpg) no-repeat top center fixed;
 	min-height: 100%;
 }
 
@@ -74,13 +73,13 @@ footer {
 	clear:both;
 }
 
-a.univ_nantes2 {
+a.univ_nantes {
 	text-indent: -9999px;
 	display:block;
 	background: url("../img/logo_univ_nantes.png") no-repeat center center;
 	height: 39px;
 	width: 71px;
-	margin:2px;
+	margin: 5px;
 }
 
 div#authors li {

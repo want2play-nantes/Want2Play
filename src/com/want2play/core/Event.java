@@ -8,6 +8,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
 
 @PersistenceCapable
@@ -32,6 +33,9 @@ public class Event
 	@Persistent
 	private Integer nbParticipantsMax;
 	
+	@Persistent
+	private Integer nbParticipants = 0;
+	
 	public Event(User creator, String place, Date date, Sport sport, Integer nbParticipantsMax) {
 		this.creator = creator;
 		this.place = place;
@@ -50,9 +54,14 @@ public class Event
 	
 	public Sport getSport() { return sport; }
 	public void setSport(Sport sport) { this.sport = sport; }
+	
+	public Integer getNbParticipants() { return nbParticipants; }
+	public void addParticipants() { nbParticipants++; }
+	public void setNbParticipants(Integer nbParticipants) { this.nbParticipants = nbParticipants; }
 
 	public Integer getNbParticipantsMax() { return nbParticipantsMax; }
 	public void setNbParticipantsMax(Integer nbParticipantsMax) { this.nbParticipantsMax = nbParticipantsMax; }
 	
 	public Key getKey() { return this.key; }
+	public String getKeyStr() { return KeyFactory.keyToString(key); }
 }

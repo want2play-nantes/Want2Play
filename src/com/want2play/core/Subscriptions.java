@@ -8,6 +8,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
 
 @PersistenceCapable
@@ -42,4 +43,5 @@ public class Subscriptions {
 	public void setEnabled(Sport sport, Boolean enabled) { enabledSubscriptions.put(sport, enabled); }
 	
 	public Key getKey() { return key; }
+	public String getKeyStr() { return KeyFactory.keyToString(key); }
 }

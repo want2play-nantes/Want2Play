@@ -13,6 +13,7 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.want2play.core.Event;
+import com.want2play.core.Participation;
 import com.want2play.core.Sport;
 import com.want2play.datastore.DatastoreController;
 
@@ -28,14 +29,12 @@ public class IndexServlet extends HttpServlet {
 		if (userService.isUserLoggedIn()) {
 			User user = userService.getCurrentUser();
 			
-			//Event event = new Event(user, "Angers", new Date(), Sport.BASKETBALL, 2);
-			//if (!DatastoreController.alreadySavedEvent(event))
-			//	DatastoreController.saveEvent(event);
+			//DatastoreController.saveEvent(new Event(user, "La Rochelle", new Date(), Sport.FOOTBALL, 10));
 			
-			List<Event> allUserEvents = DatastoreController.getEventsUser(user);
+			List<Event> allUserEvents = DatastoreController.getEventsByUser(user);
 			req.setAttribute("eventUser", allUserEvents);
 			
-			List<Event> allUserEventParticipate = DatastoreController.getEventParticipations(user);
+			List<Participation> allUserEventParticipate = DatastoreController.getParticipationsByUser(user);
 			req.setAttribute("participationsUser", allUserEventParticipate);
 		}
 		
