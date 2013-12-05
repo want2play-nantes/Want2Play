@@ -12,55 +12,17 @@
 		</p>
 		</div>
 		<div id="subscription">
-		<form class="form-horizontal" role="form">
+		<form class="form-horizontal" role="form" action= "/SubscriptionSaveServlet">
+			
+			<c:forEach var="e" items="${subs.enabledSubscriptions}">
 			<div class="checkbox-inline">
-				<label>
-					<input type="checkbox" value="">
-					 Football
-				</label>
+					<label>
+						<input type="checkbox" name="${e.key.label}" <c:if test = "${e.value}">checked</c:if> >
+						${e.key.label}
+					</label>
 			</div>
-			<div class="checkbox-inline">
-				<label>
-					<input type="checkbox" value="">
-					 Basket
-				</label>
-			</div>
-			<div class="checkbox-inline">
-				<label>
-					<input type="checkbox" value="">
-					 Handball
-				</label>
-			</div>
-			<div class="checkbox-inline">
-				<label>
-					<input type="checkbox" value="">
-					 Tennis
-				</label>
-			</div>
-			<div class="checkbox-inline">
-				<label>
-					<input type="checkbox" value="">
-					 Footing
-				</label>
-			</div>
-			<div class="checkbox-inline">
-				<label>
-					<input type="checkbox" value="">
-					 Danse
-				</label>
-			</div>
-			<div class="checkbox-inline">
-				<label>
-					<input type="checkbox" value="">
-					 Surf
-				</label>
-			</div>
-			<div class="checkbox-inline">
-				<label>
-					<input type="checkbox" value="">
-					 Golf
-				</label>
-			</div>
+			</c:forEach>
+			
 			<hr/>
 			<div class="form-group">
 				<div class="checkbox">
@@ -85,5 +47,6 @@
 			});
 		});
 		</script>
+		 
 		
 		<jsp:include page="/WEB-INF/includes/footer.jsp"></jsp:include>
