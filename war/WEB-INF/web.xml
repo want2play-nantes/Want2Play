@@ -71,6 +71,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-class>com.want2play.servlets.ParticipationServlet</servlet-class>
 	</servlet>
 	
+	<servlet>
+		<servlet-name>CreateEventServlet</servlet-name>
+		<servlet-class>com.want2play.servlets.CreateEventServlet</servlet-class>
+	</servlet>
+	
 	<!-- Mapping -->
 	
 	<servlet-mapping>
@@ -98,7 +103,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/SubscriptionSave</url-pattern>
 	</servlet-mapping>
 	
-	
 	<servlet-mapping>
 		<servlet-name>EventServlet</servlet-name>
 		<url-pattern>/Event</url-pattern>
@@ -108,4 +112,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>ParticipationServlet</servlet-name>
 		<url-pattern>/Participation</url-pattern>
 	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>CreateEventServlet</servlet-name>
+		<url-pattern>/CreateEvent</url-pattern>
+	</servlet-mapping>
+	
 </web-app>
