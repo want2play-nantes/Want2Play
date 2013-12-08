@@ -1,81 +1,112 @@
 package com.want2play.mail;
 
-
-import javax.mail.internet.*;
-import javax.mail.*;
-
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
-	
-public class Mail {
-	/**
-	 * Classe permettant d'envoyer un mail.
-	 */
+import java.io.InputStreamReader;
+import java.util.List;
+import java.util.Properties;
 
-	   private final static String MAILER_VERSION = "Java";
-	   public static boolean envoyerMailSMTP(String serveur, boolean debug) throws FileNotFoundException {
-	         boolean result = false;
-	         try {
-                 Properties prop = System.getProperties();
-                 prop.put("mail.smtp.starttls.enable", "true"); 
-                 prop.put("mail.smtp.host", "smtp.gmail.com");
-                 prop.put("mail.smtp.port", "587");
-                 prop.put("mail.smtp.auth", "true");
-                 
-                 Session session = Session.getInstance(prop,(new GMailAuthenticator("adm.want2play@gmail.com","3r9W2Nrx")));
-                 
-                 Message message = new MimeMessage(session);
-                 message.setFrom(new InternetAddress("adm.want2play@gmail.com"));
-                 InternetAddress[] internetAddresses = new InternetAddress[1];
-                 internetAddresses[0] = new InternetAddress("agnesgnagne@gmail.com");
-                 message.setRecipients(Message.RecipientType.TO,internetAddresses);
-                 message.setSubject("Notification");
-                 
-                 //ajout du fichier html a envoyer
-                 
-                 File inputFile = new File("src/message.html");
-                 FileReader r = new FileReader(inputFile);
-                 BufferedReader bf = new BufferedReader(r);
-                 StringBuilder mailSb = new StringBuilder();
-                 String chaine ; 
-                 try{	  
-               	  chaine = bf.readLine();
-               	  do{ 	 
-               	  	 mailSb.append(chaine);
-               	  	 chaine = bf.readLine();
-               	  	}while(chaine != null);
-                 }
-                 catch (IOException exception)
-                 {
-                     System.out.println ("Erreur lors de la lecture : " + exception.getMessage());
-                 }
-                 
-                 String mailStr = new String(mailSb);
-                 String res1 = mailStr.replaceAll("sport", "nomination_sport");
-                 String res2 = res1.replaceAll("date", "date_courante");
-                 String res3 = res2.replaceAll("heure", "heure_courante");
-                 String res4 = res3.replaceAll("lieu", "lieu_ciblé");
-                 String res5 = res4.replaceAll("nbParticipants", "nb_part");
-                 
-                 message.setContent(res5, "text/html; charset=utf-8");
-                 message.setHeader("X-Mailer", MAILER_VERSION);
-                 message.setSentDate(new Date());
-	                  session.setDebug(debug);
-	                  Transport.send(message);
-	                  result = true;
-	         } catch (AddressException e) {
-	                  e.printStackTrace();
-	         } catch (MessagingException e) {
-	                  e.printStackTrace();
-	         }
-	         return result;
-	   }
-	   
-	   public static void main(String[] args) throws FileNotFoundException {
-	         Mail.envoyerMailSMTP("127.0.0.1",true);
-	   }
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.servlet.ServletContext;
+
+import com.google.appengine.api.users.User;
+import com.want2play.core.Event;
+import com.want2play.datastore.DatastoreController;
+
+/**
+ * Classe permettant d'envoyer un mail.
+ */
+public class Mail {
+
+	private final static String MAIL_TEMPLATE_FOLDER = "/WEB-INF/mailTemplate/";
+
+	/**
+	 * 
+	 * @param users
+	 * @param subject
+	 * @param content
+	 * @return
+	 */
+	private static boolean sendMail(ServletContext sc, List<User> users, Event event, String subject, String content) {
+
+		boolean result;
+
+
+			// Paramètres du serveur SMTP
+			Properties props = new Properties();
+			Session session = Session.getDefaultInstance(props, null);
+			
+			try {
+			
+			// Création du message
+			Message message = new MimeMessage(session);
+
+			// Emetteur (doit être l'administrateur du site)
+			message.setFrom(new InternetAddress("adm.want2play@gmail.com", "Want2Play"));
+
+			// Destinataire
+			for (User u : users) {
+				if (!event.getCreator().equals(u))
+					message.addRecipient(Message.RecipientType.BCC, new InternetAddress(u.getEmail()));
+			}
+			message.addRecipient(Message.RecipientType.BCC, new InternetAddress("y.vernageau@gmail.com"));
+			message.addRecipient(Message.RecipientType.BCC, new InternetAddress("sumkil17@gmail.com"));
+
+			// Sujet du mail
+			message.setSubject(subject);
+			
+			// Contenu du mail
+			//message.setText(content);
+
+			message.setContent(content, "text/html; charset=utf-8");
+			
+			//message.saveChanges();
+			
+			Transport.send(message);
+			result = true;
+		}
+		catch (Exception e)
+		{
+			sc.log(e.toString());
+			result = false;
+		}
+		
+		return result;
 	}
+
+	/**
+	 * 
+	 * @param e
+	 * @return
+	 */
+	public static boolean sendMailNewEvent(ServletContext sc, Event e) {
+		StringBuilder mailSb = new StringBuilder();
+
+		try (BufferedReader bf = new BufferedReader(new InputStreamReader(sc.getResourceAsStream(MAIL_TEMPLATE_FOLDER + "newEvent.html")))) {
+			String chaine = bf.readLine();
+
+			do {
+				mailSb.append(chaine);
+				chaine = bf.readLine();
+			} while (chaine != null);
+		} catch (IOException ex) {
+
+		}
+
+		String content = mailSb.toString();
+
+		content = content.replace("#sport#", e.getSport().getLabel());
+		content = content.replace("#date#", e.getDateStr());
+		content = content.replace("#heure#", e.getHourStr());
+		content = content.replace("#lieu#", e.getPlace());
+		content = content.replace("#nbParticipants#", e.getNbParticipantsMax().toString());
+		
+		String subject = "Want2Play : Nouvel evenement !";
+
+		return sendMail(sc, DatastoreController.getSubscribedUsersSport(e.getSport()), e, subject, content);
+	}
+}
