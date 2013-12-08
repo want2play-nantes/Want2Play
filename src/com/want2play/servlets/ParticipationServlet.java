@@ -12,7 +12,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.want2play.core.Event;
-import com.want2play.core.Participation;
+import com.want2play.core.Participant;
 import com.want2play.datastore.DatastoreController;
 
 @SuppressWarnings("serial")
@@ -22,40 +22,43 @@ public class ParticipationServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException
 	{
-		if (req.getParameter("participation") != null)
-		{
-			Key key = KeyFactory.stringToKey(req.getParameter("participation"));
+		try {
+		
+			User user = UserServiceFactory.getUserService().getCurrentUser();
+			Event event = DatastoreController.getEventByKey(KeyFactory.stringToKey(req.getParameter("event")));
+			Participant participant = DatastoreController.getParticipantByUser(user);
 			
-			Participation participation = DatastoreController.getParticipationByKey(key);
-			
-			if (participation != null) {
-				DatastoreController.deleteParticipation(participation);
+			if (req.getParameter("mode").equals("delete"))
+			{
+				participant.removeEvent(event);
+				DatastoreController.updateParticipant(participant);
+				DatastoreController.updateEvent(event);
 				log("Participation supprimée");
 			}
-			else {
-				log("Participation pas supprimée");
-			}
-		}
-		else if (req.getParameter("event") != null)
-		{
-			User user = UserServiceFactory.getUserService().getCurrentUser();
-			
-			Key key = KeyFactory.stringToKey(req.getParameter("event"));
-			Event event = DatastoreController.getEventByKey(key);
-			
-			Participation participation = new Participation(user, event);
-			
-			if (!DatastoreController.isExistsParticipation(participation))
+			else if (req.getParameter("mode").equals("add"))
 			{
-				DatastoreController.saveParticipation(participation);
-				log("Participation crée");
+				if (participant == null)
+				{
+					participant = new Participant(user);
+					participant.addEvent(event);
+					DatastoreController.saveParticipant(participant);
+					DatastoreController.updateEvent(event);
+					log("Participation crée");
+				}
+				else
+				{
+					participant.addEvent(event);
+					DatastoreController.updateParticipant(participant);
+					DatastoreController.updateEvent(event);
+					log("Participation update");
+				}
 			}
 			else {
-				log("Participation pas crée");
+				log("Rien n'est fait");
 			}
 		}
-		else {
-			log("Rien n'est fait");
+		catch(Exception e) {
+			log("Erreur de paramètre");
 		}
 		
 		resp.sendRedirect(req.getHeader("Referer"));

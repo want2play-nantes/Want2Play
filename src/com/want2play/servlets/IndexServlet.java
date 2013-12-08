@@ -1,7 +1,9 @@
 package com.want2play.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -9,11 +11,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.want2play.core.Event;
-import com.want2play.core.Participation;
+import com.want2play.core.Participant;
 import com.want2play.core.Sport;
 import com.want2play.datastore.DatastoreController;
 
@@ -25,23 +28,56 @@ public class IndexServlet extends HttpServlet {
 			throws ServletException, IOException
 	{
 		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+		Participant participant = DatastoreController.getParticipantByUser(user);
 		
-		if (userService.isUserLoggedIn()) {
-			User user = userService.getCurrentUser();
+		if (userService.isUserLoggedIn())
+		{
+			req.setAttribute("eventUser", eventsSortedByDate(DatastoreController.getEventsByUser(user)));
+
+			List<Event> participations = new ArrayList<>();
 			
-			//DatastoreController.saveEvent(new Event(user, "La Rochelle", new Date(), Sport.FOOTBALL, 10));
-			//DatastoreController.saveEvent(new Event(user, "Nantes", new Date(), Sport.BASKETBALL, 10));
-			
-			List<Event> allUserEvents = DatastoreController.getEventsByUser(user);
-			req.setAttribute("eventUser", allUserEvents);
-			
-			List<Participation> allUserEventParticipate = DatastoreController.getParticipationsByUser(user);
-			req.setAttribute("participationsUser", allUserEventParticipate);
+			if (participant != null) {
+				for (Key k : participant.getEvents()) {
+					participations.add(DatastoreController.getEventByKey(k));
+				}
+			}
+			req.setAttribute("participationsUser", eventsSortedByDate(participations));
 		}
 		
-		List<Event> allEvents = DatastoreController.getAllEvents();
-		req.setAttribute("allEvents", allEvents);
+		List<Event> allEvents;
+
+		/*
+		if (userService.isUserLoggedIn() && participant != null) {
+			allEvents.removeAll(DatastoreController.getEventsByKeys(participant.getEvents()));
+		}
+		*/
+		
+		if (userService.isUserLoggedIn()) {
+			allEvents = DatastoreController.getEventsWithoutUser(user);
+		}
+		else {
+			allEvents = DatastoreController.getAllEvents();
+		}
+		
+		req.setAttribute("allEvents", eventsSortedByDate(allEvents));
 		
 		getServletContext().getRequestDispatcher("/WEB-INF/index.jsp").forward(req, resp);
+	}
+	
+	private HashMap<String, List<Event>> eventsSortedByDate(List<Event> events)
+	{
+		HashMap<String, List<Event>> eventUserSortedByDate = new HashMap<>();
+		
+		for (Event e: events)
+		{
+			if (!eventUserSortedByDate.containsKey(e.getDateStr()))
+			{
+				eventUserSortedByDate.put(e.getDateStr(), new ArrayList<Event>());
+			}
+			eventUserSortedByDate.get(e.getDateStr()).add(e);
+		}
+		
+		return eventUserSortedByDate;
 	}
 }
