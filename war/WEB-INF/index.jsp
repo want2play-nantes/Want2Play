@@ -57,7 +57,8 @@
 									<span class="glyphicon glyphicon-pencil"></span>
 								</a>
 								&nbsp;&nbsp;
-								<a href="/Event?mode=delete&event=${e.keyStr}" role="button" class="btn btn-danger btn-xs">
+								<!--<a href="/Event?mode=delete&event=${e.keyStr}" role="button" class="btn btn-danger btn-xs">-->
+								<a href="/DeleteEvent?mode=delete&event=${e.keyStr}" role="button" class="btn btn-danger btn-xs"  onclick="return confirm('Voulez-vous vraiment supprimer cette évènement?')">
 									<span class="glyphicon glyphicon-trash"></span>
 								</a>
 							</td>
