@@ -23,7 +23,7 @@
 			<div class="col-sm-10">
 				<select class="form-control" name="sport" required>
   					<option>Football</option>
-  					<option>Basket</option>
+  					<option>Basketball</option>
 				  	<option>Handball</option>
 				  	<option>Tennis</option>
 				  	<option>Footing</option>

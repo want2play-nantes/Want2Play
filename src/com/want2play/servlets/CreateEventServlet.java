@@ -54,7 +54,7 @@ public class CreateEventServlet extends HttpServlet {
 
 		log("Création de l'évènement :"+success.toString());
 		
-		resp.sendRedirect("/");
+		resp.sendRedirect(req.getHeader("Referer"));
 	    	
 	}
 
