@@ -30,7 +30,6 @@ public class InfoHeaderUser implements Filter {
 		if(userService.isUserLoggedIn()) {
 			User user = userService.getCurrentUser();
 			req.setAttribute("user", user);
-			req.setAttribute("nickname", user.getNickname());
 		}
 		else {
 		}
