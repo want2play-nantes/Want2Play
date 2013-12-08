@@ -58,10 +58,27 @@ div#content {
 /*
  * Subscription
  */
-div#subscription .checkbox-inline {
-	width: 200px;
+div#subscription li {
+	width: 175px;
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
+div#subscription ul {
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+}
+
+/*
+ * Evenements
+ */
+
+#checkAll {
+	display: block;
+	width: 140px;
+	margin: auto;
+}
 
 /*
  * Bas de page

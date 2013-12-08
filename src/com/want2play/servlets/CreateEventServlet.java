@@ -6,14 +6,17 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.google.appengine.api.users.User;
 import com.want2play.core.Event;
 import com.want2play.core.Sport;
 import com.want2play.datastore.DatastoreController;
+import com.want2play.mail.Mail;
 
 public class CreateEventServlet extends HttpServlet {
 
@@ -42,7 +45,7 @@ public class CreateEventServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		String place = req.getParameter("place");
+		String place = req.getParameter("lieu");
 		
 		Sport sport = Sport.valueOf(req.getParameter("sport").toUpperCase());
 		
@@ -51,6 +54,8 @@ public class CreateEventServlet extends HttpServlet {
 		
 		Event evt = new Event( creator, place, date, sport, nbPart);	
 		Boolean success = DatastoreController.saveEvent(evt);
+		
+		Mail.sendMailNewEvent(getServletContext(), evt);
 
 		log("Création de l'évènement :"+success.toString());
 		

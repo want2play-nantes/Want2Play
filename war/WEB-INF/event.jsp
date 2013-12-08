@@ -54,7 +54,6 @@
 			<div class="form-group">
 				<label for="inputParticipants" class="col-sm-2 control-label">Participants</label>
 				<div class="col-sm-10 input-group">
-					
 					<input type="text" class="form-control" name="nbPart" id="inputParticipants" placeholder="Nombre maximum de participants" required>
 				</div>
 			</div>

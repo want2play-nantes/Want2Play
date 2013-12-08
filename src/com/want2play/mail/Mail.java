@@ -35,13 +35,12 @@ public class Mail {
 
 		boolean result;
 
+		// Paramètres du serveur SMTP
+		Properties props = new Properties();
+		Session session = Session.getDefaultInstance(props, null);
 
-			// Paramètres du serveur SMTP
-			Properties props = new Properties();
-			Session session = Session.getDefaultInstance(props, null);
-			
-			try {
-			
+		try
+		{
 			// Création du message
 			Message message = new MimeMessage(session);
 
@@ -50,22 +49,17 @@ public class Mail {
 
 			// Destinataire
 			for (User u : users) {
-				if (!event.getCreator().equals(u))
+				if (!event.getCreator().equals(u)) {
 					message.addRecipient(Message.RecipientType.BCC, new InternetAddress(u.getEmail()));
+				}
 			}
-			message.addRecipient(Message.RecipientType.BCC, new InternetAddress("y.vernageau@gmail.com"));
-			message.addRecipient(Message.RecipientType.BCC, new InternetAddress("sumkil17@gmail.com"));
 
 			// Sujet du mail
 			message.setSubject(subject);
-			
-			// Contenu du mail
-			//message.setText(content);
 
+			// Corps du message
 			message.setContent(content, "text/html; charset=utf-8");
-			
-			//message.saveChanges();
-			
+
 			Transport.send(message);
 			result = true;
 		}
@@ -74,7 +68,7 @@ public class Mail {
 			sc.log(e.toString());
 			result = false;
 		}
-		
+
 		return result;
 	}
 
@@ -84,29 +78,60 @@ public class Mail {
 	 * @return
 	 */
 	public static boolean sendMailNewEvent(ServletContext sc, Event e) {
-		StringBuilder mailSb = new StringBuilder();
-
-		try (BufferedReader bf = new BufferedReader(new InputStreamReader(sc.getResourceAsStream(MAIL_TEMPLATE_FOLDER + "newEvent.html")))) {
-			String chaine = bf.readLine();
-
-			do {
-				mailSb.append(chaine);
-				chaine = bf.readLine();
-			} while (chaine != null);
-		} catch (IOException ex) {
-
-		}
-
-		String content = mailSb.toString();
+		String content = readFile(sc, "newEvent.html");
 
 		content = content.replace("#sport#", e.getSport().getLabel());
 		content = content.replace("#date#", e.getDateStr());
 		content = content.replace("#heure#", e.getHourStr());
 		content = content.replace("#lieu#", e.getPlace());
 		content = content.replace("#nbParticipants#", e.getNbParticipantsMax().toString());
-		
-		String subject = "Want2Play : Nouvel evenement !";
 
-		return sendMail(sc, DatastoreController.getSubscribedUsersSport(e.getSport()), e, subject, content);
+		String subject = "Want2Play : Nouvelle activite !";
+
+		return sendMail(
+				sc,
+				DatastoreController.getSubscribedUsersSport(e.getSport()),
+				e,
+				subject,
+				content
+			);
+	}
+
+	public static boolean sendMailCancelledEvent(ServletContext sc, Event e) {
+		String content = readFile(sc, "deletedEvent.html");
+
+		content = content.replace("#sport#", e.getSport().getLabel());
+		content = content.replace("#date#", e.getDateStr());
+		content = content.replace("#heure#", e.getHourStr());
+		content = content.replace("#lieu#", e.getPlace());
+
+		String subject = "Want2Play : Activite annulee !";
+
+		return sendMail(
+				sc,
+				DatastoreController.getSubscribedUsersSport(e.getSport()), 
+				e,
+				subject, 
+				content
+			);
+	}
+
+	private static String readFile(ServletContext sc, String filename) {
+		StringBuilder mailSb = new StringBuilder();
+
+		try (BufferedReader bf = new BufferedReader(new InputStreamReader(sc.getResourceAsStream(MAIL_TEMPLATE_FOLDER + filename))))
+		{
+			String chaine = bf.readLine();
+
+			do 
+			{
+				mailSb.append(chaine);
+				chaine = bf.readLine();
+			}
+			while (chaine != null);
+		}
+		catch (IOException ex) {}
+
+		return mailSb.toString();
 	}
 }

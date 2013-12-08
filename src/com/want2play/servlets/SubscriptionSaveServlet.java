@@ -43,7 +43,7 @@ public class SubscriptionSaveServlet extends HttpServlet {
 			log("Abonnement : Enregistrement dans le DS");
 			DatastoreController.saveSubscription(subs);
 		}
-		resp.sendRedirect("/Subscription");
+		resp.sendRedirect("/Subscription?resp=1");
 	}
 	
 	private Subscriptions processParameters(HttpServletRequest req, Subscriptions subs)

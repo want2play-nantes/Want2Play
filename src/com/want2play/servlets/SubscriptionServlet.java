@@ -34,7 +34,7 @@ public class SubscriptionServlet extends HttpServlet {
 			subs = new Subscriptions(user);
 			log("Utilisateur non abonnée -> Enregistrement");
 		}
-
+		
 		req.setAttribute("subs", subs);
 		getServletContext().getRequestDispatcher("/WEB-INF/subscription.jsp").forward(req, resp);
 	}

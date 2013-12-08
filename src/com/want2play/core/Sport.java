@@ -15,4 +15,5 @@ public enum Sport {
 	}
 	
 	public String getLabel() { return this.label; }
+	
 }
