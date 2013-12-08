@@ -33,6 +33,21 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         	<filter-name>InfoHeaderUser</filter-name>
         	<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+	<filter>
+    	<description>Oblige l'utilisateur à l'authentifier sur certaines pages.</description>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>com.want2play.filters.AuthFilter</filter-class>
+	</filter>
+	<filter-mapping>
+        	<filter-name>AuthFilter</filter-name>
+        	<url-pattern>/Subscription</url-pattern>
+			<url-pattern>/SubscriptionSave</url-pattern>
+			<url-pattern>/Event</url-pattern>
+			<url-pattern>/Participation</url-pattern>
+			<url-pattern>/CreateEvent</url-pattern>
+			<url-pattern>/DeleteEvent</url-pattern>
+	</filter-mapping>
     
     <!-- Servlets -->
 
