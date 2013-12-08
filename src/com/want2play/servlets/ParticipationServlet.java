@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -22,8 +21,9 @@ public class ParticipationServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException
 	{
-		try {
 		
+		
+		try {
 			User user = UserServiceFactory.getUserService().getCurrentUser();
 			Event event = DatastoreController.getEventByKey(KeyFactory.stringToKey(req.getParameter("event")));
 			Participant participant = DatastoreController.getParticipantByUser(user);
@@ -35,7 +35,7 @@ public class ParticipationServlet extends HttpServlet {
 				DatastoreController.updateEvent(event);
 				log("Participation supprimée");
 			}
-			else if (req.getParameter("mode").equals("add"))
+			else if (req.getParameter("mode").equals("add") && event.getNbParticipants() < event.getNbParticipantsMax())
 			{
 				if (participant == null)
 				{

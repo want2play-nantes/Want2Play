@@ -12,7 +12,7 @@
 		</p>
 		</div>
 		<div id="subscription">
-		<form class="form-horizontal" role="form" action= "/SubscriptionSaveServlet">
+		<form class="form-horizontal" role="form" action= "SubscriptionSave">
 			
 			<c:forEach var="e" items="${subs.enabledSubscriptions}">
 			<div class="checkbox-inline">

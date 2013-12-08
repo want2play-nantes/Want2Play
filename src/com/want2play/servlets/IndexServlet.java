@@ -2,7 +2,6 @@ package com.want2play.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,7 +16,6 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.want2play.core.Event;
 import com.want2play.core.Participant;
-import com.want2play.core.Sport;
 import com.want2play.datastore.DatastoreController;
 
 @SuppressWarnings("serial")
@@ -42,21 +40,18 @@ public class IndexServlet extends HttpServlet {
 					participations.add(DatastoreController.getEventByKey(k));
 				}
 			}
+			
 			req.setAttribute("participationsUser", eventsSortedByDate(participations));
 		}
 		
 		List<Event> allEvents;
-
-		/*
-		if (userService.isUserLoggedIn() && participant != null) {
-			allEvents.removeAll(DatastoreController.getEventsByKeys(participant.getEvents()));
-		}
-		*/
 		
-		if (userService.isUserLoggedIn()) {
+		if (userService.isUserLoggedIn())
+		{
 			allEvents = DatastoreController.getEventsWithoutUser(user);
 		}
-		else {
+		else
+		{
 			allEvents = DatastoreController.getAllEvents();
 		}
 		

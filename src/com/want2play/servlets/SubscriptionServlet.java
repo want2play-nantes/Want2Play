@@ -1,7 +1,6 @@
 package com.want2play.servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,22 +15,27 @@ import com.want2play.datastore.DatastoreController;
 
 @SuppressWarnings("serial")
 public class SubscriptionServlet extends HttpServlet {
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException
-	{
-		
+			throws ServletException, IOException {
+
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-        PrintWriter out = resp.getWriter();
-		
-        Subscriptions subs ;
-		if (DatastoreController.isSubscribedUser(user)){
+
+		Subscriptions subs;
+		if (DatastoreController.isSubscribedUser(user))
+		{
 			subs = DatastoreController.getSubscriptionsByUser(user);
-		}else{ subs = new Subscriptions(user);}
-			 
-		req.setAttribute("subs",subs);
+			log("Utilisateur abonné -> Modification");
+		}
+		else
+		{
+			subs = new Subscriptions(user);
+			log("Utilisateur non abonnée -> Enregistrement");
+		}
+
+		req.setAttribute("subs", subs);
 		getServletContext().getRequestDispatcher("/WEB-INF/subscription.jsp").forward(req, resp);
 	}
 }

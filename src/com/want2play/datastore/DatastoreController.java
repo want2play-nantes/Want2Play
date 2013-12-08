@@ -1,18 +1,12 @@
 package com.want2play.datastore;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.jdo.Extent;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
-
-import org.datanucleus.exceptions.NucleusObjectNotFoundException;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.users.User;
@@ -29,7 +23,8 @@ public class DatastoreController {
 	/**
 	 * Retourne true si un evenement existe deja dans le datastore, false sinon.
 	 * 
-	 * @param event evenement
+	 * @param event
+	 *            evenement
 	 * @return true si l'evenement existe deja dans le datastore, false sinon
 	 */
 	public static boolean isExistsEvent(Event event)
@@ -39,11 +34,9 @@ public class DatastoreController {
 
 		try {
 			isExists = (pm.getObjectById(Event.class, event.getKey()) != null);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			isExists = false;
-		}
-		finally {
+		} finally {
 			pm.close();
 		}
 
@@ -53,11 +46,11 @@ public class DatastoreController {
 	/**
 	 * Enregistre un evenement dans le Datastore.
 	 * 
-	 * @param event evenement a enregistrer
+	 * @param event
+	 *            evenement a enregistrer
 	 * @return true si l'enregistrement s'est termine avec succes, false sinon
 	 */
-	public static boolean saveEvent(Event event)
-	{
+	public static boolean saveEvent(Event event) {
 		if (isExistsEvent(event))
 			return false;
 
@@ -69,7 +62,8 @@ public class DatastoreController {
 			tx.begin();
 			pm.makePersistent(event);
 			tx.commit();
-		} finally {
+		}
+		finally {
 			if (tx.isActive()) {
 				tx.rollback();
 				success = false;
@@ -83,13 +77,18 @@ public class DatastoreController {
 	/**
 	 * Supprime un evenement du Datastore.
 	 * 
-	 * @param event evenement a supprimer
+	 * @param event
+	 *            evenement a supprimer
 	 * @return true si la suppression s'est terminee avec succes, false sinon
 	 */
-	public static boolean deleteEvent(Event event)
-	{
+	public static boolean deleteEvent(Event event) {
 		if (!isExistsEvent(event))
 			return false;
+		
+		for (Participant p : getParticipantByEvent(event)) {
+			p.removeEvent(event);
+			updateParticipant(p);
+		}
 
 		PersistenceManager pm = Factory.getInstance().getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
@@ -97,9 +96,11 @@ public class DatastoreController {
 
 		try {
 			tx.begin();
+
 			pm.deletePersistent(pm.getObjectById(Event.class, event.getKey()));
 			tx.commit();
-		} finally {
+		}
+		finally {
 			if (tx.isActive()) {
 				tx.rollback();
 				success = false;
@@ -113,11 +114,11 @@ public class DatastoreController {
 	/**
 	 * Met a jour un evenement du Datastore.
 	 * 
-	 * @param event evenement a mettre a jour
+	 * @param event
+	 *            evenement a mettre a jour
 	 * @return true si la mise e jour s'est terminee avec succes, false sinon
 	 */
-	public static boolean updateEvent(Event event)
-	{
+	public static boolean updateEvent(Event event) {
 		PersistenceManager pm = Factory.getInstance().getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		boolean success = true;
@@ -133,8 +134,7 @@ public class DatastoreController {
 			e.setParticipants(event.getParticipants());
 
 			tx.commit();
-		}
-		finally {
+		} finally {
 			if (tx.isActive()) {
 				tx.rollback();
 				success = false;
@@ -144,20 +144,17 @@ public class DatastoreController {
 
 		return success;
 	}
-	
-	public static Event getEventByKey(Key key)
-	{
+
+	public static Event getEventByKey(Key key) {
 		Event event;
-		
+
 		PersistenceManager pm = Factory.getInstance().getPersistenceManager();
 
 		try {
 			event = pm.getObjectById(Event.class, key);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			event = null;
-		}
-		finally {
+		} finally {
 			pm.close();
 		}
 
@@ -170,8 +167,7 @@ public class DatastoreController {
 	 * @return la liste de tous les évènements
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<Event> getAllEvents()
-	{
+	public static List<Event> getAllEvents() {
 		List<Event> events;
 
 		PersistenceManager pm = Factory.getInstance().getPersistenceManager();
@@ -179,42 +175,37 @@ public class DatastoreController {
 		try {
 			Query query = pm.newQuery(Event.class);
 			query.setOrdering("date desc");
-			
-			events = (List<Event>)query.execute();
+
+			events = (List<Event>) query.execute();
 
 		} finally {
 			pm.close();
 		}
-		
+
 		return events;
 	}
-	
-	public static List<Event> getEventsWithoutUser(User user)
-	{
+
+	public static List<Event> getEventsWithoutUser(User user) {
 		List<Event> eventsWithoutUser = new ArrayList<>();
-		
+
 		Participant p = getParticipantByUser(user);
 
 		PersistenceManager pm = Factory.getInstance().getPersistenceManager();
 
 		Extent<Event> extent = null;
-		
+
 		try {
 			extent = pm.getExtent(Event.class, false);
-		for (Event e : extent)
-		{
-			// Si l'utilisateur est le createur de l'evenement ou qu'il y participe, l'evenement n'est pas ajoute
-			if (
-					(!user.equals(e.getCreator()) && p != null && !p.getEvents().contains(e.getKey()))
-					|| 
-					(!user.equals(e.getCreator()) && p == null)
-				)
-			{
-				eventsWithoutUser.add(e);
+			for (Event e : extent) {
+				// Si l'utilisateur est le createur de l'evenement ou qu'il y
+				// participe, l'evenement n'est pas ajoute
+				if ((!user.equals(e.getCreator()) && p != null && !p
+						.getEvents().contains(e.getKey()))
+						|| (!user.equals(e.getCreator()) && p == null)) {
+					eventsWithoutUser.add(e);
+				}
 			}
-		}
-		}
-		finally {
+		} finally {
 			extent.closeAll();
 		}
 
@@ -229,8 +220,7 @@ public class DatastoreController {
 	 * @return la liste de tous les évènements crée par l'utilisateur
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<Event> getEventsByUser(User user)
-	{
+	public static List<Event> getEventsByUser(User user) {
 		List<Event> userEvents = new ArrayList<>();
 
 		PersistenceManager pm = Factory.getInstance().getPersistenceManager();
@@ -255,8 +245,7 @@ public class DatastoreController {
 	 *            utilisateur
 	 * @return true si un utilisateur est d�j� abonn�, false sinon
 	 */
-	public static boolean isSubscribedUser(User user)
-	{
+	public static boolean isSubscribedUser(User user) {
 		PersistenceManager pm = Factory.getInstance().getPersistenceManager();
 		boolean isSubscribed = false;
 
@@ -273,19 +262,16 @@ public class DatastoreController {
 
 		return isSubscribed;
 	}
-	
-	public static boolean isExistsSubscriptions(Subscriptions subs)
-	{
+
+	public static boolean isExistsSubscriptions(Subscriptions subs) {
 		PersistenceManager pm = Factory.getInstance().getPersistenceManager();
 		boolean isExists;
 
 		try {
 			isExists = (pm.getObjectById(Subscriptions.class, subs.getKey()) != null);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			isExists = false;
-		}
-		finally {
+		} finally {
 			pm.close();
 		}
 
@@ -299,8 +285,7 @@ public class DatastoreController {
 	 *            abonnement � enregistrer
 	 * @return true si l'enregistrement s'est termin� avec succ�s, false sinon
 	 */
-	public static boolean saveSubscription(Subscriptions subs)
-	{
+	public static boolean saveSubscription(Subscriptions subs) {
 		if (isSubscribedUser(subs.getUser()))
 			return false;
 
@@ -330,8 +315,7 @@ public class DatastoreController {
 	 *            abonnement � supprimer
 	 * @return true si la suppression s'est termin�e avec succ�s, false sinon
 	 */
-	public static boolean deleteSubscription(Subscriptions subs)
-	{
+	public static boolean deleteSubscription(Subscriptions subs) {
 		if (!isSubscribedUser(subs.getUser()))
 			return false;
 
@@ -366,8 +350,7 @@ public class DatastoreController {
 	 *            liste d'abonnement
 	 * @return true si la mise � jour s'est termin�e avec succ�s, false sinon
 	 */
-	public static boolean updateSubscription(Subscriptions newSubs)
-	{
+	public static boolean updateSubscription(Subscriptions subs) {
 		PersistenceManager pm = Factory.getInstance().getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		boolean success = true;
@@ -375,11 +358,9 @@ public class DatastoreController {
 		try {
 			tx.begin();
 
-			Subscriptions subs = pm.getObjectById(Subscriptions.class, newSubs.getKey());
-
-			for (Map.Entry<Sport, Boolean> e : newSubs.getEnabledSubscriptions().entrySet()) {
-				subs.setEnabled(e.getKey(), e.getValue());
-			}
+			Subscriptions s = pm.getObjectById(Subscriptions.class,
+					subs.getKey());
+			s.setEnabledSubscriptions(subs.getEnabledSubscriptions());
 
 			tx.commit();
 		} finally {
@@ -392,20 +373,17 @@ public class DatastoreController {
 
 		return success;
 	}
-	
-	public static Subscriptions getSubscriptionByKey(Key key)
-	{
+
+	public static Subscriptions getSubscriptionByKey(Key key) {
 		Subscriptions subs;
-		
+
 		PersistenceManager pm = Factory.getInstance().getPersistenceManager();
 
 		try {
 			subs = pm.getObjectById(Subscriptions.class, key);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			subs = null;
-		}
-		finally {
+		} finally {
 			pm.close();
 		}
 
@@ -419,8 +397,7 @@ public class DatastoreController {
 	 *            utilisateur
 	 * @return l'abonnement de l'utilisateur s'il existe, null sinon
 	 */
-	public static Subscriptions getSubscriptionsByUser(User user)
-	{
+	public static Subscriptions getSubscriptionsByUser(User user) {
 		if (!isSubscribedUser(user))
 			return null;
 
@@ -449,8 +426,7 @@ public class DatastoreController {
 	 * @return la liste de tous les abonnements
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<Subscriptions> getAllSubscriptions()
-	{
+	public static List<Subscriptions> getAllSubscriptions() {
 		List<Subscriptions> subs;
 
 		PersistenceManager pm = Factory.getInstance().getPersistenceManager();
@@ -474,8 +450,7 @@ public class DatastoreController {
 	 *            sport
 	 * @return la liste de tous les abonnements concern�s par le sport
 	 */
-	public static List<User> getSubscribedUsersSport(Sport sport)
-	{
+	public static List<User> getSubscribedUsersSport(Sport sport) {
 		List<User> subscribedUsers = new ArrayList<>();
 
 		for (Subscriptions s : getAllSubscriptions()) {
@@ -485,27 +460,23 @@ public class DatastoreController {
 
 		return subscribedUsers;
 	}
-	
-	public static boolean isExistsParticipant(Participant participant)
-	{
+
+	public static boolean isExistsParticipant(Participant participant) {
 		PersistenceManager pm = Factory.getInstance().getPersistenceManager();
 		boolean isExists;
 
 		try {
 			isExists = (pm.getObjectById(Participant.class, participant.getKey()) != null);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			isExists = false;
-		}
-		finally {
+		} finally {
 			pm.close();
 		}
 
 		return isExists;
 	}
-	
-	public static boolean saveParticipant(Participant participant)
-	{
+
+	public static boolean saveParticipant(Participant participant) {
 		PersistenceManager pm = Factory.getInstance().getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		boolean success = true;
@@ -524,9 +495,8 @@ public class DatastoreController {
 
 		return success;
 	}
-	
-	public static boolean deleteParticipant(Participant participant)
-	{
+
+	public static boolean deleteParticipant(Participant participant) {
 		PersistenceManager pm = Factory.getInstance().getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		boolean success = true;
@@ -547,9 +517,8 @@ public class DatastoreController {
 
 		return success;
 	}
-	
-	public static boolean updateParticipant(Participant participant)
-	{
+
+	public static boolean updateParticipant(Participant participant) {
 		PersistenceManager pm = Factory.getInstance().getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		boolean success = true;
@@ -561,8 +530,7 @@ public class DatastoreController {
 			p.setEvents(participant.getEvents());
 
 			tx.commit();
-		}
-		finally {
+		} finally {
 			if (tx.isActive()) {
 				tx.rollback();
 				success = false;
@@ -572,28 +540,34 @@ public class DatastoreController {
 
 		return success;
 	}
-	
-	public static Participant getParticipantByKey(Key key)
-	{
+
+	/**
+	 * Retourne un participant par sa cle
+	 * @param key la cle
+	 * @return le participant
+	 */
+	public static Participant getParticipantByKey(Key key) {
 		Participant p;
-		
+
 		PersistenceManager pm = Factory.getInstance().getPersistenceManager();
 
 		try {
 			p = pm.getObjectById(Participant.class, key);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			p = null;
-		}
-		finally {
+		} finally {
 			pm.close();
 		}
 
 		return p;
 	}
 
-	public static Participant getParticipantByUser(User user)
-	{
+	/**
+	 * Retourne le participant de l'utilisateur
+	 * @param user l'utilisateur
+	 * @return le participant
+	 */
+	public static Participant getParticipantByUser(User user) {
 		Participant p;
 
 		PersistenceManager pm = Factory.getInstance().getPersistenceManager();
@@ -604,16 +578,39 @@ public class DatastoreController {
 
 			@SuppressWarnings("unchecked")
 			List<Participant> l = (List<Participant>) query.execute(user);
-			
+
 			if (!l.isEmpty())
 				p = l.get(0);
 			else
 				p = null;
+		} finally {
+			pm.close();
+		}
+
+		return p;
+	}
+
+	/**
+	 * Retourne la liste des participants à l'evenement
+	 * @param e l'evenement
+	 * @return la liste des participants
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<Participant> getParticipantByEvent(Event e)
+	{
+		List<Participant> participants = new ArrayList<>();
+
+		PersistenceManager pm = Factory.getInstance().getPersistenceManager();
+
+		try {
+			Query query = pm.newQuery(Participant.class);
+			
+			participants = (List<Participant>) query.execute();
 		}
 		finally {
 			pm.close();
 		}
 
-		return p;
+		return participants;
 	}
 }

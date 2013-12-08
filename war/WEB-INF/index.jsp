@@ -114,7 +114,7 @@
 						<td><p class="list-group-item-text">${e.place}</p></td>
 						<td width="10%" class="text-right"><p class="list-group-item-text">${e.nbParticipants} / ${e.nbParticipantsMax}</p></td>
 						<td width="130px" class="text-right">
-							<a href="/Participation?event=${e.keyStr}&mode=add" role="button" class="btn btn-success btn-xs">Je participe</a>
+							<a href="/Participation?event=${e.keyStr}&mode=add" role="button" class="btn btn-success btn-xs <c:if test='${e.nbParticipants >= e.nbParticipantsMax}'>disabled</c:if>">Je participe</a>
 						</td>
 					</tr>
 					</c:forEach>

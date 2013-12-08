@@ -1,7 +1,6 @@
 package com.want2play.servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,29 +23,40 @@ public class SubscriptionSaveServlet extends HttpServlet {
 
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-		PrintWriter out = resp.getWriter();
 
 		Subscriptions subs;
-		if (DatastoreController.isSubscribedUser(user)) {
+		
+		if (DatastoreController.isSubscribedUser(user))
+		{
 			subs = DatastoreController.getSubscriptionsByUser(user);
-			for (Sport s : Sport.values()) {
-				Boolean value = Boolean.parseBoolean(req.getParameter(s
-						.getLabel()));
-				subs.setEnabled(s, value);
-				
-			}
-			// DatastoreController.updateSubscription(subs);
-		} else {
+			
+			processParameters(req, subs);
+			
+			log("Abonnement : Mise à jour dans le DS");
+			DatastoreController.updateSubscription(subs);
+		}
+		else {
 			subs = new Subscriptions(user);
-			for (Sport s : Sport.values()) {
-				out.println("hello");
-				Boolean value = Boolean.parseBoolean(req.getParameter(s
-						.getLabel()));
-				subs.setEnabled(s, value);
-
-			}
+			
+			processParameters(req, subs);
+			
+			log("Abonnement : Enregistrement dans le DS");
 			DatastoreController.saveSubscription(subs);
 		}
 		resp.sendRedirect("/Subscription");
+	}
+	
+	private Subscriptions processParameters(HttpServletRequest req, Subscriptions subs)
+	{
+		for (Sport s : Sport.values())
+		{
+			if (req.getParameter(s.getLabel()) != null)
+				subs.setEnabled(s, true);
+			else
+				subs.setEnabled(s, false);
+		}
+		
+		return subs;
+		
 	}
 }

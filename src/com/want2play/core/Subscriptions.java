@@ -38,6 +38,7 @@ public class Subscriptions {
 	public User getUser() { return user; }
 
 	public HashMap<Sport, Boolean> getEnabledSubscriptions() { return enabledSubscriptions; }
+	public void setEnabledSubscriptions(HashMap<Sport, Boolean> enabledSubscriptions) { this.enabledSubscriptions = enabledSubscriptions; }
 	
 	public boolean isEnabled(Sport sport) { return enabledSubscriptions.get(sport); }
 	public void setEnabled(Sport sport, Boolean enabled) { enabledSubscriptions.put(sport, enabled); }
