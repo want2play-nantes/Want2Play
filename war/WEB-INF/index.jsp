@@ -41,16 +41,17 @@
 		<div class="page-header">
 			<h1>Mes évènements</h1>
 		</div>
+		<c:forEach var="item" items="${eventUser}">
 		<div class="panel panel-default">
-			<div class="panel-heading">Date</div>
+			<div class="panel-heading">${item.key}</div>
 			<table class="table">
 				<tbody>
-					<c:forEach var="e" items="${eventUser}">
+					<c:forEach var="e" items="${item.value}">
 						<tr>
 							<td width="20%"><h4 class="list-group-item-heading">${e.sport.label}</h4></td>
-							<td width="20%"><p class="list-group-item-text">${e.date}</p></td>
+							<td width="20%"><p class="list-group-item-text">${e.hourStr}</p></td>
 							<td><p class="list-group-item-text">${e.place}</p></td>
-							<td width="10%" class="text-right"><p class="list-group-item-text">${e.nbParticipantsMax}</p></td>
+							<td width="10%" class="text-right"><p class="list-group-item-text">${e.nbParticipants} / ${e.nbParticipantsMax}</p></td>
 							<td width="130px" class="text-right">
 								<a href="/Event?mode=edit&event=${e.keyStr}" role="button" class="btn btn-warning btn-xs">
 									<span class="glyphicon glyphicon-pencil"></span>
@@ -65,29 +66,33 @@
 				</tbody>
 			</table>
 		</div>
+		</c:forEach>
 	</c:if>
 	<c:if test="${fn:length(participationsUser) > 0}">
 		<div class="page-header">
 			<h1>Mes participations</h1>
 		</div>
+		
+		<c:forEach var="item" items="${participationsUser}">
 		<div class="panel panel-default">
-			<div class="panel-heading">Date...</div>
+			<div class="panel-heading">${item.key}</div>
 			<table class="table">
 				<tbody>
-					<c:forEach var="p" items="${participationsUser}">
+					<c:forEach var="e" items="${item.value}">
 						<tr>
-							<td width="20%"><h4 class="list-group-item-heading">${p.event.sport.label}</h4></td>
-							<td width="20%"><p class="list-group-item-text">${p.event.date}</p></td>
-							<td><p class="list-group-item-text">${p.event.place}</p></td>
-							<td width="10%" class="text-right"><p class="list-group-item-text">${p.event.nbParticipantsMax}</p></td>
+							<td width="20%"><h4 class="list-group-item-heading">${e.sport.label}</h4></td>
+							<td width="20%"><p class="list-group-item-text">${e.date}</p></td>
+							<td><p class="list-group-item-text">${e.place}</p></td>
+							<td width="10%" class="text-right"><p class="list-group-item-text">${e.nbParticipants} / ${e.nbParticipantsMax}</p></td>
 							<td width="130px" class="text-right">
-								<a href="/Participation?participation=${p.keyStr}" role="button" class="btn btn-danger btn-xs">Je ne participe plus</a>
+								<a href="/Participation?event=${e.keyStr}&mode=delete" role="button" class="btn btn-danger btn-xs">Je ne participe plus</a>
 							</td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 		</div>
+		</c:forEach>
 	</c:if>
 </c:if>
 	<div class="page-header">
@@ -95,24 +100,27 @@
 	</div>
 	<c:choose>
 	<c:when test="${fn:length(allEvents) > 0}">
-	<div class="panel panel-default">
-		<div class="panel-heading">Date...</div>
-		<table class="table">
-			<tbody>
-				<c:forEach var="e" items="${allEvents}">
-					<tr>
+	
+	<c:forEach var="item" items="${allEvents}">
+		<div class="panel panel-default">
+			<div class="panel-heading">${item.key}</div>
+			<table class="table">
+				<tbody>
+					<c:forEach var="e" items="${item.value}">
+						<tr>
 						<td width="20%"><h4 class="list-group-item-heading">${e.sport.label}</h4></td>
 						<td width="20%"><p class="list-group-item-text">${e.date}</p></td>
 						<td><p class="list-group-item-text">${e.place}</p></td>
-						<td width="10%" class="text-right"><p class="list-group-item-text">${e.nbParticipantsMax}</p></td>
+						<td width="10%" class="text-right"><p class="list-group-item-text">${e.nbParticipants} / ${e.nbParticipantsMax}</p></td>
 						<td width="130px" class="text-right">
-							<a href="/Participation?event=${e.keyStr}" role="button" class="btn btn-success btn-xs">Je participe</a>
+							<a href="/Participation?event=${e.keyStr}&mode=add" role="button" class="btn btn-success btn-xs">Je participe</a>
 						</td>
 					</tr>
-				 </c:forEach>
-			</tbody>
-		</table>
-	</div>
+					</c:forEach>
+				</tbody>
+			</table>
+		</div>
+		</c:forEach>
 	 </c:when>
 	 <c:otherwise>
 	 	<div class="well text-center"><h4>Aucun évènement</h4></div>

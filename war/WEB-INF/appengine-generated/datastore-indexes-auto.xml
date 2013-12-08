@@ -1,8 +1,8 @@
-<!-- Indices written at Thu, 5 Dec 2013 15:09:49 CET -->
+<!-- Indices written at Sun, 8 Dec 2013 17:31:22 CET -->
 
 <datastore-indexes>
 
-    <!-- Used 1 time in query history -->
+    <!-- Used 7 times in query history -->
     <datastore-index kind="Event" ancestor="false" source="auto">
         <property name="creator" direction="asc"/>
         <property name="date" direction="desc"/>
