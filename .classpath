@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.servlet.jsp.jstl-api-1.2.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/joda-time-2.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/datanucleus-jodatime-3.2.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/joda-time-jsptags-1.1.1.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

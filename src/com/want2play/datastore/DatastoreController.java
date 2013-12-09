@@ -127,12 +127,18 @@ public class DatastoreController {
 			tx.begin();
 
 			Event e = pm.getObjectById(Event.class, event.getKey());
-			e.setPlace(event.getPlace());
-			e.setDate(event.getDate());
-			e.setHour(event.getHour());
-			e.setSport(event.getSport());
-			e.setNbParticipantsMax(event.getNbParticipantsMax());
-			e.setParticipants(event.getParticipants());
+			
+			if (!e.equals(event)) {
+				e.setPlace(event.getPlace());
+				e.setDate(event.getDate());
+				e.setHour(event.getHour());
+				e.setSport(event.getSport());
+				e.setNbParticipantsMax(event.getNbParticipantsMax());
+				e.setParticipants(event.getParticipants());
+			}
+			else {
+				success = false;
+			}
 
 			tx.commit();
 		} finally {
@@ -597,17 +603,17 @@ public class DatastoreController {
 	 * @param e l'evenement
 	 * @return la liste des participants
 	 */
-	@SuppressWarnings("unchecked")
 	public static List<Participant> getParticipantByEvent(Event e)
 	{
 		List<Participant> participants = new ArrayList<>();
 
 		PersistenceManager pm = Factory.getInstance().getPersistenceManager();
 
-		try {
-			Query query = pm.newQuery(Participant.class);
-			
-			participants = (List<Participant>) query.execute();
+		try
+		{
+			for (Key k : e.getParticipants()) {
+				participants.add(pm.getObjectById(Participant.class, k));
+			}
 		}
 		finally {
 			pm.close();

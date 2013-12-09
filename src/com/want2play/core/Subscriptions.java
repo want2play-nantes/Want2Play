@@ -30,7 +30,7 @@ public class Subscriptions {
 		enabledSubscriptions = new HashMap<>();
 		
 		// Initialisation des valeurs
-		for(Sport s : Sport.values()) {
+		for(Sport s : Sport.sortedValues()) {
 			enabledSubscriptions.put(s, false);
 		}
 	}

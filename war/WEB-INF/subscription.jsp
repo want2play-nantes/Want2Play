@@ -24,11 +24,11 @@
 <div id="subscription">
 	<form class="form-horizontal" role="form" action="/SubscriptionSave">
 		<ul class="list-inline">
-			<c:forEach var="e" items="${subs.enabledSubscriptions}">
+			<c:forEach var="e" items="${sportsList}">
 				<li>
 					<div class="checkbox">
-						<label> <input type="checkbox" name="${e.key.label}"
-							<c:if test = "${e.value}">checked</c:if>> <strong>${e.key.label}</strong>
+						<label> <input type="checkbox" name="${e.label}"
+							<c:if test = "${subs.enabledSubscriptions[e]}">checked</c:if>> <strong>${e.label}</strong>
 						</label>
 					</div>
 				</li>
@@ -50,7 +50,6 @@
 		</div>
 		
 		<c:if test="${param.resp == 1}">
-			
 			<div class="alert alert-success alert-dismissable">
 			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 			Modifications enregistrée avec succès.

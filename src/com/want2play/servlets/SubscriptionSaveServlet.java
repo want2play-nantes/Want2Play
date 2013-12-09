@@ -25,38 +25,35 @@ public class SubscriptionSaveServlet extends HttpServlet {
 		User user = userService.getCurrentUser();
 
 		Subscriptions subs;
-		
-		if (DatastoreController.isSubscribedUser(user))
-		{
+
+		if (DatastoreController.isSubscribedUser(user)) {
 			subs = DatastoreController.getSubscriptionsByUser(user);
-			
+
 			processParameters(req, subs);
-			
+
 			log("Abonnement : Mise à jour dans le DS");
 			DatastoreController.updateSubscription(subs);
-		}
-		else {
+		} else {
 			subs = new Subscriptions(user);
-			
+
 			processParameters(req, subs);
-			
+
 			log("Abonnement : Enregistrement dans le DS");
 			DatastoreController.saveSubscription(subs);
 		}
 		resp.sendRedirect("/Subscription?resp=1");
 	}
-	
-	private Subscriptions processParameters(HttpServletRequest req, Subscriptions subs)
-	{
-		for (Sport s : Sport.values())
-		{
+
+	private Subscriptions processParameters(HttpServletRequest req,
+			Subscriptions subs) {
+		for (Sport s : Sport.values()) {
 			if (req.getParameter(s.getLabel()) != null)
 				subs.setEnabled(s, true);
 			else
 				subs.setEnabled(s, false);
 		}
-		
+
 		return subs;
-		
+
 	}
 }

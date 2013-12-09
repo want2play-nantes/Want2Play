@@ -5,6 +5,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="joda" uri="http://www.joda.org/joda/time/tags" %>
 
 <jsp:include page="/WEB-INF/includes/header.jsp"></jsp:include>
 
@@ -13,7 +14,7 @@
 		<div class="row">
 			<div class="spanSubscription well text-center">
 				<h2>Abonnement</h2>
-				<p>Vous voulez être tenu au courant lors d'un évènement à côté
+				<p>Vous voulez être tenu au courant lorsqu'une activité se crée à côté
 					de chez vous ?</p>
 				<p>Abonnez vous !</p>
 				<br /> <a href="/Subscription" role="button"
@@ -30,7 +31,7 @@
 	<c:otherwise>
 		<div class="row">
 			<div class="well text-center">
-				<p>Connectez vous pour profitez des évènements !</p>
+				<p>Connectez vous pour pouvoir profitez de toutes les activités et vous abonnez !</p>
 				<a href="/Login" role="button" class="btn btn-success">Se connecter</a>
 			</div>
 		</div>
@@ -43,7 +44,7 @@
 		</div>
 		<c:forEach var="item" items="${eventUser}">
 		<div class="panel panel-default">
-			<div class="panel-heading text-center"><strong>${item.key}</strong></div>
+			<div class="panel-heading text-center"><strong><joda:format value="${item.key}" pattern="EEEE dd MMMM yyyy"/></strong></div>
 			<table class="table">
 				<tbody>
 					<c:forEach var="e" items="${item.value}">
@@ -76,7 +77,7 @@
 		
 		<c:forEach var="item" items="${participationsUser}">
 		<div class="panel panel-default">
-			<div class="panel-heading text-center"><strong>${item.key}</strong></div>
+			<div class="panel-heading text-center"><strong><joda:format value="${item.key}" pattern="EEEE dd MMMM yyyy"/></strong></div>
 			<table class="table">
 				<tbody>
 					<c:forEach var="e" items="${item.value}">
@@ -104,7 +105,7 @@
 	
 	<c:forEach var="item" items="${allEvents}">
 		<div class="panel panel-default">
-			<div class="panel-heading text-center"><strong>${item.key}</strong></div>
+			<div class="panel-heading text-center"><strong><joda:format value="${item.key}" pattern="EEEE dd MMMM yyyy"/></strong></div>
 			<table class="table">
 				<tbody>
 					<c:forEach var="e" items="${item.value}">

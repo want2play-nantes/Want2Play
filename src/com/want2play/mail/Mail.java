@@ -3,6 +3,7 @@ package com.want2play.mail;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -15,6 +16,7 @@ import javax.servlet.ServletContext;
 
 import com.google.appengine.api.users.User;
 import com.want2play.core.Event;
+import com.want2play.core.Participant;
 import com.want2play.datastore.DatastoreController;
 
 /**
@@ -65,7 +67,7 @@ public class Mail {
 		}
 		catch (Exception e)
 		{
-			sc.log(e.toString());
+			sc.log(e.getMessage());
 			result = false;
 		}
 
@@ -88,17 +90,49 @@ public class Mail {
 
 		String subject = "Want2Play : Nouvelle activite !";
 
+		List<User> users = new ArrayList<>();
+		
+		for (Participant p : DatastoreController.getParticipantByEvent(e)) {
+			users.add(p.getUser());
+		}
+
 		return sendMail(
 				sc,
-				DatastoreController.getSubscribedUsersSport(e.getSport()),
+				users, 
 				e,
-				subject,
+				subject, 
 				content
 			);
 	}
 
 	public static boolean sendMailCancelledEvent(ServletContext sc, Event e) {
 		String content = readFile(sc, "deletedEvent.html");
+
+		content = content.replace("#sport#", e.getSport().getLabel());
+		content = content.replace("#date#", e.getDateStr());
+		content = content.replace("#heure#", e.getHourStr());
+		content = content.replace("#lieu#", e.getPlace());
+
+		String subject = "Want2Play : Activite annulee !";
+		
+		List<User> users = new ArrayList<>();
+		
+		for (Participant p : DatastoreController.getParticipantByEvent(e)) {
+			users.add(p.getUser());
+		}
+
+		return sendMail(
+				sc,
+				users, 
+				e,
+				subject, 
+				content
+			);
+	}
+	
+	public static boolean sendMailEditEvent(ServletContext sc, Event e)
+	{
+		String content = readFile(sc, "editEvent.html");
 
 		content = content.replace("#sport#", e.getSport().getLabel());
 		content = content.replace("#date#", e.getDateStr());

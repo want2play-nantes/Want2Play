@@ -14,24 +14,12 @@
 </div>
 			
 <c:if test="${not empty param and param.mode eq 'edit'}">
-				<!--<p> IF°1: here ${mde}</p>-->
 				<c:set var="mde" scope="request" value="${param.mode}"/>
-				
 				<c:if test="${fn:length(eventUser) > 0}">
-					<!-- <p> IF°2: here </p> -->
-					
 					<c:forEach var="hme" items="${eventUser}">
-					<!-- <p> FOREACH°1: here</p>-->					
-						
 						<c:forEach var="e" items="${hme.value}">
-						<!-- <p> FOREACH°2: here</p>-->
-							
 							<c:if test="${e.keyStr eq param.event}"> 
-							<!-- <p> IF°3: here </p> -->	
-								
 								<c:set var="evt" scope="page" value="${e}"/>
-								<!-- <p> SET: here </p> -->
-							
 							</c:if>
 						</c:forEach>
 					</c:forEach>	
@@ -45,18 +33,16 @@
       				<p class="form-control-static">${user.email}</p>
     			</div>
 			</div>
+			
 			<div class="form-group">
 			<label class="col-sm-2 control-label">Sport</label>
 			<div class="col-sm-10">
-				<select class="form-control" name="sport" required>
-  					<c:if test="${not empty event}">
-						<option>${event.sport.label}</option>
-					</c:if>
-  					<option>Football</option>
-  					<option>Basketball</option>
-				  	<option>Handball</option>
-				  	<option>Tennis</option>
-				  	<option>Footing</option>
+				<select class="form-control" name="sport" required <c:if test="${not empty event}">disabled</c:if>>
+					<option value="-1">Sélectionnez une activité</option>
+					
+					<c:forEach var="sport" items="${sportsList}">
+  						<option <c:if test="${event.sport == sport}">selected</c:if> value="${sport}">${sport.label}</option>
+  					</c:forEach>
 				</select>
 				</div>
 			</div>
@@ -64,14 +50,14 @@
 				<label for="inputDate" class="col-sm-2 control-label">Date</label>
 				<div class="col-sm-10 input-group">
 					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-					<input type="date" class="form-control" value="<c:if test="${not empty event}">${event.dateFormStr}</c:if>" name="date" id="inputDate" placeholder="Date" required>
+					<input type="date" class="form-control" value="<c:if test="${not empty event}">${event.dateFormStr}</c:if>" name="date" id="inputDate" placeholder="yyyy-MM-dd" required>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="inputHeure" class="col-sm-2 control-label">Heure</label>
 				<div class="col-sm-10 input-group">
 					<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
-					<input type="time" class="form-control" value="<c:if test="${not empty event}">${event.hourStr}</c:if>" name="heure"  id="inputHeure" placeholder="Date" required>
+					<input type="time" class="form-control" value="<c:if test="${not empty event}">${event.hourStr}</c:if>" name="heure"  id="inputHeure" placeholder="HH:mm" required>
 				</div>
 			</div>
 			<div class="form-group">

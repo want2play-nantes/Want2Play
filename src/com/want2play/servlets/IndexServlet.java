@@ -2,13 +2,16 @@ package com.want2play.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
+import java.util.TreeMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.joda.time.DateTime;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.users.User;
@@ -60,17 +63,22 @@ public class IndexServlet extends HttpServlet {
 		getServletContext().getRequestDispatcher("/WEB-INF/index.jsp").forward(req, resp);
 	}
 	
-	private HashMap<String, List<Event>> eventsSortedByDate(List<Event> events)
+	private TreeMap<DateTime, List<Event>> eventsSortedByDate(List<Event> events)
 	{
-		HashMap<String, List<Event>> eventUserSortedByDate = new HashMap<>();
+		Collections.sort(events);
+		
+		TreeMap<DateTime, List<Event>> eventUserSortedByDate = new TreeMap<>();
 		
 		for (Event e: events)
 		{
-			if (!eventUserSortedByDate.containsKey(e.getDateStr().toUpperCase()))
-			{
-				eventUserSortedByDate.put(e.getDateStr().toUpperCase(), new ArrayList<Event>());
+			// Si la date est après l'heure actuelle + 15mn
+			if (e.getDate().isAfter(DateTime.now().plusMinutes(15))) {
+				if (!eventUserSortedByDate.containsKey(e.getDate()))
+				{
+					eventUserSortedByDate.put(e.getDate(), new ArrayList<Event>());
+				}
+				eventUserSortedByDate.get(e.getDate()).add(e);
 			}
-			eventUserSortedByDate.get(e.getDateStr().toUpperCase()).add(e);
 		}
 		
 		return eventUserSortedByDate;

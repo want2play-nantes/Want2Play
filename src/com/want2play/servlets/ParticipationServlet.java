@@ -21,46 +21,44 @@ public class ParticipationServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException
 	{
-		
-		
-		try {
-			User user = UserServiceFactory.getUserService().getCurrentUser();
-			Event event = DatastoreController.getEventByKey(KeyFactory.stringToKey(req.getParameter("event")));
-			Participant participant = DatastoreController.getParticipantByUser(user);
-			
-			if (req.getParameter("mode").equals("delete"))
-			{
-				participant.removeEvent(event);
-				DatastoreController.updateParticipant(participant);
-				DatastoreController.updateEvent(event);
-				log("Participation supprimée");
-			}
-			else if (req.getParameter("mode").equals("add") && event.getNbParticipants() < event.getNbParticipantsMax())
-			{
-				if (participant == null)
-				{
-					participant = new Participant(user);
-					participant.addEvent(event);
-					DatastoreController.saveParticipant(participant);
-					DatastoreController.updateEvent(event);
-					log("Participation crée");
-				}
-				else
-				{
-					participant.addEvent(event);
+		if (UserServiceFactory.getUserService().isUserLoggedIn()) {
+
+			try {
+				User user = UserServiceFactory.getUserService()
+						.getCurrentUser();
+				Event event = DatastoreController.getEventByKey(KeyFactory
+						.stringToKey(req.getParameter("event")));
+				Participant participant = DatastoreController
+						.getParticipantByUser(user);
+
+				if (req.getParameter("mode").equals("delete")) {
+					participant.removeEvent(event);
 					DatastoreController.updateParticipant(participant);
 					DatastoreController.updateEvent(event);
-					log("Participation update");
+					log("Participation supprimée");
+				} else if (req.getParameter("mode").equals("add")
+						&& event.getNbParticipants() < event
+								.getNbParticipantsMax()) {
+					if (participant == null) {
+						participant = new Participant(user);
+						participant.addEvent(event);
+						DatastoreController.saveParticipant(participant);
+						DatastoreController.updateEvent(event);
+						log("Participation crée");
+					} else {
+						participant.addEvent(event);
+						DatastoreController.updateParticipant(participant);
+						DatastoreController.updateEvent(event);
+						log("Participation update");
+					}
+				} else {
+					log("Rien n'est fait");
 				}
-			}
-			else {
-				log("Rien n'est fait");
+			} catch (Exception e) {
+				log("Erreur de paramètre");
 			}
 		}
-		catch(Exception e) {
-			log("Erreur de paramètre");
-		}
-		
+
 		resp.sendRedirect(req.getHeader("Referer"));
 	}
 }

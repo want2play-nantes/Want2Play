@@ -12,7 +12,7 @@
 		<ul class="nav navbar-nav">
 			<li> <a class="univ_nantes" href="http://www.univ-nantes.fr/" title="Université de Nantes">Université de Nantes</a> </li>
 		</ul>
-		<ul class="nav navbar-nav navbar-right">
+		<ul id="authors" class="nav navbar-nav navbar-right">
 			<li>
 				<p class="navbar-text">FERDJANI Arafet</p>
 			</li>

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.want2play.core.Sport;
 import com.want2play.core.Subscriptions;
 import com.want2play.datastore.DatastoreController;
 
@@ -36,6 +37,8 @@ public class SubscriptionServlet extends HttpServlet {
 		}
 		
 		req.setAttribute("subs", subs);
+		req.setAttribute("sportsList", Sport.sortedValues());
+		
 		getServletContext().getRequestDispatcher("/WEB-INF/subscription.jsp").forward(req, resp);
 	}
 }
