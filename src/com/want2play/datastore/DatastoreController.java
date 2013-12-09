@@ -129,6 +129,7 @@ public class DatastoreController {
 			Event e = pm.getObjectById(Event.class, event.getKey());
 			e.setPlace(event.getPlace());
 			e.setDate(event.getDate());
+			e.setHour(event.getHour());
 			e.setSport(event.getSport());
 			e.setNbParticipantsMax(event.getNbParticipantsMax());
 			e.setParticipants(event.getParticipants());
@@ -174,7 +175,7 @@ public class DatastoreController {
 
 		try {
 			Query query = pm.newQuery(Event.class);
-			query.setOrdering("date desc");
+			query.setOrdering("date desc, hour desc");
 
 			events = (List<Event>) query.execute();
 
@@ -196,16 +197,17 @@ public class DatastoreController {
 
 		try {
 			extent = pm.getExtent(Event.class, false);
-			for (Event e : extent) {
+			for (Event e : extent)
+			{
 				// Si l'utilisateur est le createur de l'evenement ou qu'il y
 				// participe, l'evenement n'est pas ajoute
-				if ((!user.equals(e.getCreator()) && p != null && !p
-						.getEvents().contains(e.getKey()))
+				if ((!user.equals(e.getCreator()) && p != null && !p.getEvents().contains(e.getKey()))
 						|| (!user.equals(e.getCreator()) && p == null)) {
 					eventsWithoutUser.add(e);
 				}
 			}
-		} finally {
+		}
+		finally {
 			extent.closeAll();
 		}
 
@@ -228,7 +230,7 @@ public class DatastoreController {
 		try {
 			Query query = pm.newQuery(Event.class, "this.creator == user");
 			query.declareParameters("com.google.appengine.api.users.User user");
-			query.setOrdering("date desc");
+			query.setOrdering("date desc, hour desc");
 
 			userEvents = (List<Event>) query.execute(user);
 		} finally {

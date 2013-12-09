@@ -43,7 +43,7 @@
 		</div>
 		<c:forEach var="item" items="${eventUser}">
 		<div class="panel panel-default">
-			<div class="panel-heading">${item.key}</div>
+			<div class="panel-heading text-center"><strong>${item.key}</strong></div>
 			<table class="table">
 				<tbody>
 					<c:forEach var="e" items="${item.value}">
@@ -76,13 +76,13 @@
 		
 		<c:forEach var="item" items="${participationsUser}">
 		<div class="panel panel-default">
-			<div class="panel-heading">${item.key}</div>
+			<div class="panel-heading text-center"><strong>${item.key}</strong></div>
 			<table class="table">
 				<tbody>
 					<c:forEach var="e" items="${item.value}">
 						<tr>
 							<td width="20%"><h4 class="list-group-item-heading">${e.sport.label}</h4></td>
-							<td width="20%"><p class="list-group-item-text">${e.date}</p></td>
+							<td width="20%"><p class="list-group-item-text">${e.hourStr}</p></td>
 							<td><p class="list-group-item-text">${e.place}</p></td>
 							<td width="10%" class="text-right"><p class="list-group-item-text">${e.nbParticipants} / ${e.nbParticipantsMax}</p></td>
 							<td width="130px" class="text-right">
@@ -104,13 +104,13 @@
 	
 	<c:forEach var="item" items="${allEvents}">
 		<div class="panel panel-default">
-			<div class="panel-heading">${item.key}</div>
+			<div class="panel-heading text-center"><strong>${item.key}</strong></div>
 			<table class="table">
 				<tbody>
 					<c:forEach var="e" items="${item.value}">
 						<tr>
 						<td width="20%"><h4 class="list-group-item-heading">${e.sport.label}</h4></td>
-						<td width="20%"><p class="list-group-item-text">${e.date}</p></td>
+						<td width="20%"><p class="list-group-item-text">${e.hourStr}</p></td>
 						<td><p class="list-group-item-text">${e.place}</p></td>
 						<td width="10%" class="text-right"><p class="list-group-item-text">${e.nbParticipants} / ${e.nbParticipantsMax}</p></td>
 						<td width="130px" class="text-right">

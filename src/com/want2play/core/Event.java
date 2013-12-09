@@ -1,14 +1,16 @@
 package com.want2play.core;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -28,7 +30,10 @@ public class Event
 	private String place;
 	
 	@Persistent
-	private Date date;
+	private DateTime date;
+	
+	@Persistent
+	private DateTime hour;
 	
 	@Persistent
 	private Sport sport;
@@ -39,10 +44,11 @@ public class Event
 	@Persistent
 	private List<Key> participants;
 	
-	public Event(User creator, String place, Date date, Sport sport, Integer nbParticipantsMax) {
+	public Event(User creator, DateTime date, DateTime hour, String place, Sport sport, Integer nbParticipantsMax) {
 		this.creator = creator;
 		this.place = place;
 		this.date = date;
+		this.hour = hour;
 		this.sport = sport;
 		this.nbParticipantsMax = nbParticipantsMax;
 		this.participants = new ArrayList<>();
@@ -53,17 +59,25 @@ public class Event
 	public String getPlace() { return place; }
 	public void setPlace(String place) { this.place = place; }
 
-	public Date getDate() { return date; }
-	public void setDate(Date date) { this.date = date; }
+	public DateTime getDate() { return date; }
+	public void setDate(DateTime date) { this.date = date; }
+	
+	public DateTime getHour() { return hour; }
+	public void setHour(DateTime hour) { this.hour = hour; }
 	
 	public String getHourStr()
 	{
-		return new SimpleDateFormat("H:mm").format(date);
+		return DateTimeFormat.forPattern("HH:mm").withLocale(Locale.FRANCE).print(hour);
 	}
 	
 	public String getDateStr()
 	{
-		return new SimpleDateFormat("EEEE d MMM yyyy").format(date);
+		return DateTimeFormat.forPattern("EEEE dd MMMM yyyy").withLocale(Locale.FRANCE).print(date);
+	}
+	
+	public String getDateFormStr()
+	{
+		return DateTimeFormat.forPattern("yyyy-MM-dd").withLocale(Locale.FRANCE).print(date);
 	}
 	
 	public Sport getSport() { return sport; }

@@ -66,11 +66,11 @@ public class IndexServlet extends HttpServlet {
 		
 		for (Event e: events)
 		{
-			if (!eventUserSortedByDate.containsKey(e.getDateStr()))
+			if (!eventUserSortedByDate.containsKey(e.getDateStr().toUpperCase()))
 			{
-				eventUserSortedByDate.put(e.getDateStr(), new ArrayList<Event>());
+				eventUserSortedByDate.put(e.getDateStr().toUpperCase(), new ArrayList<Event>());
 			}
-			eventUserSortedByDate.get(e.getDateStr()).add(e);
+			eventUserSortedByDate.get(e.getDateStr().toUpperCase()).add(e);
 		}
 		
 		return eventUserSortedByDate;

@@ -7,6 +7,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+import com.want2play.core.Event;
+import com.want2play.datastore.DatastoreController;
+
 @SuppressWarnings("serial")
 public class EventServlet extends HttpServlet {
 
@@ -14,6 +19,21 @@ public class EventServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException
 	{
+		if (req.getParameter("mode") != null) {
+			
+			if (req.getParameter("mode").equals("edit") && req.getParameter("event") != null)
+			{
+				Key key = KeyFactory.stringToKey(req.getParameter("event"));
+				
+				Event event = DatastoreController.getEventByKey(key);
+			
+				if (event != null) {
+					req.setAttribute("event", event);
+				}
+			
+			}
+		}
+		
 		getServletContext().getRequestDispatcher("/WEB-INF/event.jsp").forward(req, resp);
 	}
 	
