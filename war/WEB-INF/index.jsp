@@ -50,7 +50,7 @@
 					<c:forEach var="e" items="${item.value}">
 						<tr>
 							<td width="20%"><h4 class="list-group-item-heading">${e.sport.label}</h4></td>
-							<td width="20%"><p class="list-group-item-text">${e.hourStr}</p></td>
+							<td width="20%"><p class="list-group-item-text"><joda:format value="${e.hour}" pattern="HH:mm" /></p></td>
 							<td><p class="list-group-item-text">${e.place}</p></td>
 							<td width="10%" class="text-right"><p class="list-group-item-text">${e.nbParticipants} / ${e.nbParticipantsMax}</p></td>
 							<td width="130px" class="text-right">
@@ -82,7 +82,7 @@
 					<c:forEach var="e" items="${item.value}">
 						<tr>
 							<td width="20%"><h4 class="list-group-item-heading">${e.sport.label}</h4></td>
-							<td width="20%"><p class="list-group-item-text">${e.hourStr}</p></td>
+							<td width="20%"><p class="list-group-item-text"><joda:format value="${e.hour}" pattern="HH:mm" /></p></td>
 							<td><p class="list-group-item-text">${e.place}</p></td>
 							<td width="10%" class="text-right"><p class="list-group-item-text">${e.nbParticipants} / ${e.nbParticipantsMax}</p></td>
 							<td width="130px" class="text-right">
@@ -110,7 +110,7 @@
 					<c:forEach var="e" items="${item.value}">
 						<tr>
 						<td width="20%"><h4 class="list-group-item-heading">${e.sport.label}</h4></td>
-						<td width="20%"><p class="list-group-item-text">${e.hourStr}</p></td>
+						<td width="20%"><p class="list-group-item-text"><joda:format value="${e.hour}" pattern="HH:mm" /></p></td>
 						<td><p class="list-group-item-text">${e.place}</p></td>
 						<td width="10%" class="text-right"><p class="list-group-item-text">${e.nbParticipants} / ${e.nbParticipantsMax}</p></td>
 						<td width="130px" class="text-right">

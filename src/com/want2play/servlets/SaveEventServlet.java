@@ -40,6 +40,10 @@ public class SaveEventServlet extends HttpServlet {
 				DateTime date = DateTime.parse(req.getParameter("date"), DateTimeFormat.forPattern("yyyy-MM-dd"));
 				DateTime hour = DateTime.parse(req.getParameter("heure"), DateTimeFormat.forPattern("H:mm"));
 				
+				if (date.isBefore(DateTime.now())) {
+					resp.sendRedirect("/");
+				}
+				
 				String place = req.getParameter("lieu");
 				
 				Integer nbPart = Integer.valueOf(req.getParameter("nbPart"));

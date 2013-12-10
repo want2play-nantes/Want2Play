@@ -14,10 +14,10 @@
 </head>
 <body>
 <!-- Intégration de la libraire jQuery --> 
-<script src="../js/jquery-2.0.2.min.js"></script>
+<script src="/js/jquery-2.0.2.min.js"></script>
 
 <!-- Intégration de la libraire de composants du Bootstrap --> 
-<script src="../js/bootstrap.js"></script> 
+<script src="/js/bootstrap.js"></script> 
 
 <div id="wrapper">		
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">

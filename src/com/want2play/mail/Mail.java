@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -13,6 +14,8 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletContext;
+
+import org.joda.time.format.DateTimeFormat;
 
 import com.google.appengine.api.users.User;
 import com.want2play.core.Event;
@@ -89,8 +92,8 @@ public class Mail {
 		String content = readFile(sc, "newEvent.html");
 
 		content = content.replace("#sport#", e.getSport().getLabel());
-		content = content.replace("#date#", e.getDateStr());
-		content = content.replace("#heure#", e.getHourStr());
+		content = content.replace("#date#", DateTimeFormat.forPattern("EEEE dd MMMM yyyy").withLocale(Locale.FRANCE).print(e.getDate()));
+		content = content.replace("#heure#", DateTimeFormat.forPattern("HH:mm").withLocale(Locale.FRANCE).print(e.getHour()));
 		content = content.replace("#lieu#", e.getPlace());
 		content = content.replace("#nbParticipants#", e.getNbParticipantsMax()
 				.toString());
@@ -105,8 +108,8 @@ public class Mail {
 		String content = readFile(sc, "deletedEvent.html");
 
 		content = content.replace("#sport#", e.getSport().getLabel());
-		content = content.replace("#date#", e.getDateStr());
-		content = content.replace("#heure#", e.getHourStr());
+		content = content.replace("#date#", DateTimeFormat.forPattern("EEEE dd MMMM yyyy").withLocale(Locale.FRANCE).print(e.getDate()));
+		content = content.replace("#heure#", DateTimeFormat.forPattern("HH:mm").withLocale(Locale.FRANCE).print(e.getHour()));
 		content = content.replace("#lieu#", e.getPlace());
 
 		String subject = "Want2Play : Activite annulee !";
@@ -124,8 +127,8 @@ public class Mail {
 		String content = readFile(sc, "editEvent.html");
 
 		content = content.replace("#sport#", e.getSport().getLabel());
-		content = content.replace("#date#", e.getDateStr());
-		content = content.replace("#heure#", e.getHourStr());
+		content = content.replace("#date#", DateTimeFormat.forPattern("EEEE dd MMMM yyyy").withLocale(Locale.FRANCE).print(e.getDate()));
+		content = content.replace("#heure#", DateTimeFormat.forPattern("HH:mm").withLocale(Locale.FRANCE).print(e.getHour()));
 		content = content.replace("#lieu#", e.getPlace());
 
 		String subject = "Want2Play : Activite modifiee !";

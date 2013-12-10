@@ -71,10 +71,12 @@ public class IndexServlet extends HttpServlet {
 		
 		TreeMap<DateTime, List<Event>> eventUserSortedByDate = new TreeMap<>();
 		
+		
+		
 		for (Event e: events)
 		{
-			// Si la date est après l'heure actuelle + 15mn
-			if (e.getDate().isAfter(DateTime.now().plusMinutes(15))) {
+			// Si la date est après l'heure actuelle - 15mn
+			if (e.getFullDate().isAfter(DateTime.now().minusMinutes(15))) {
 				if (!eventUserSortedByDate.containsKey(e.getDate()))
 				{
 					eventUserSortedByDate.put(e.getDate(), new ArrayList<Event>());

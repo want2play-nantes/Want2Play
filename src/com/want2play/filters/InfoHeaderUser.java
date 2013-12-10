@@ -9,7 +9,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import com.google.appengine.api.users.User;
+import org.joda.time.DateTime;
+
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
@@ -28,8 +29,8 @@ public class InfoHeaderUser implements Filter {
 		UserService userService = UserServiceFactory.getUserService();
 		
 		if(userService.isUserLoggedIn()) {
-			User user = userService.getCurrentUser();
-			req.setAttribute("user", user);
+			req.setAttribute("user", userService.getCurrentUser());
+			req.setAttribute("now", DateTime.now());
 		}
 		else {
 		}

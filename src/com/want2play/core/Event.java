@@ -2,7 +2,6 @@ package com.want2play.core;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
@@ -10,7 +9,6 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -65,22 +63,7 @@ public class Event implements Comparable<Event>
 	public DateTime getHour() { return hour; }
 	public void setHour(DateTime hour) { this.hour = hour; }
 	
-	public String getHourStr()
-	{
-		return DateTimeFormat.forPattern("HH:mm").withLocale(Locale.FRANCE).print(hour);
-	}
-	
-	public String getDateStr()
-	{
-		return DateTimeFormat.forPattern("EEEE dd MMMM yyyy").withLocale(Locale.FRANCE).print(date);
-	}
-	
-	public String getDateFormStr()
-	{
-		return DateTimeFormat.forPattern("yyyy-MM-dd").withLocale(Locale.FRANCE).print(date);
-	}
-	
-	private DateTime getFullDate()
+	public DateTime getFullDate()
 	{
 		return new DateTime(
 			date.year().get(),
