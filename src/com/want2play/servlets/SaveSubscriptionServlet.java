@@ -15,7 +15,7 @@ import com.want2play.core.Subscriptions;
 import com.want2play.datastore.DatastoreController;
 
 @SuppressWarnings("serial")
-public class SubscriptionSaveServlet extends HttpServlet {
+public class SaveSubscriptionServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)

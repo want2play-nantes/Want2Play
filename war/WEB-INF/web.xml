@@ -18,11 +18,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     	<param-name>applicationTitle</param-name>
     	<param-value>I Want 2 Play !</param-value>
     </context-param>
-
-	<listener>
-        <description>ServletContextListener</description>
-        <listener-class>com.want2play.servlets.ContextListener</listener-class>
-    </listener>
     
     <filter>
     	<description>Permet d'obtenir des informations sur le status de l'utilisateur.</description>
@@ -42,11 +37,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<filter-mapping>
         	<filter-name>AuthFilter</filter-name>
         	<url-pattern>/Subscription</url-pattern>
-			<url-pattern>/SubscriptionSave</url-pattern>
 			<url-pattern>/Event</url-pattern>
-			<url-pattern>/Participation</url-pattern>
-			<url-pattern>/CreateEvent</url-pattern>
-			<url-pattern>/DeleteEvent</url-pattern>
+			<url-pattern>/SaveParticipation</url-pattern>
+			<url-pattern>/SaveEvent</url-pattern>
+			<url-pattern>/SaveSubscription</url-pattern>
 	</filter-mapping>
     
     <!-- Servlets -->
@@ -72,8 +66,8 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet>
 	
 	<servlet>
-		<servlet-name>SubscriptionSaveServlet</servlet-name>
-		<servlet-class>com.want2play.servlets.SubscriptionSaveServlet</servlet-class>
+		<servlet-name>SaveSubscriptionServlet</servlet-name>
+		<servlet-class>com.want2play.servlets.SaveSubscriptionServlet</servlet-class>
 	</servlet>
 	
 	<servlet>
@@ -82,18 +76,13 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet>
 	
 	<servlet>
-		<servlet-name>ParticipationServlet</servlet-name>
-		<servlet-class>com.want2play.servlets.ParticipationServlet</servlet-class>
+		<servlet-name>SaveParticipationServlet</servlet-name>
+		<servlet-class>com.want2play.servlets.SaveParticipationServlet</servlet-class>
 	</servlet>
 	
 	<servlet>
-		<servlet-name>CreateEventServlet</servlet-name>
-		<servlet-class>com.want2play.servlets.CreateEventServlet</servlet-class>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>DeleteEventServlet</servlet-name>
-		<servlet-class>com.want2play.servlets.DeleteEventServlet</servlet-class>
+		<servlet-name>SaveEventServlet</servlet-name>
+		<servlet-class>com.want2play.servlets.SaveEventServlet</servlet-class>
 	</servlet>
 	
 	<!-- Mapping -->
@@ -119,8 +108,8 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet-mapping>
 	
 	<servlet-mapping>
-		<servlet-name>SubscriptionSaveServlet</servlet-name>
-		<url-pattern>/SubscriptionSave</url-pattern>
+		<servlet-name>SaveSubscriptionServlet</servlet-name>
+		<url-pattern>/SaveSubscription</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
@@ -129,18 +118,13 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet-mapping>
 	
 	<servlet-mapping>
-		<servlet-name>ParticipationServlet</servlet-name>
-		<url-pattern>/Participation</url-pattern>
+		<servlet-name>SaveParticipationServlet</servlet-name>
+		<url-pattern>/SaveParticipation</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
-		<servlet-name>CreateEventServlet</servlet-name>
-		<url-pattern>/CreateEvent</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>DeleteEventServlet</servlet-name>
-		<url-pattern>/DeleteEvent</url-pattern>
+		<servlet-name>SaveEventServlet</servlet-name>
+		<url-pattern>/SaveEvent</url-pattern>
 	</servlet-mapping>
 	
 </web-app>

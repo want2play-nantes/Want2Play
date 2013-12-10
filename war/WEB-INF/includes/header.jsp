@@ -1,17 +1,16 @@
-﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page isELIgnored="false" %>
+<%@ page isELIgnored="false" %>
 
 <!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
 <title>${initParam['applicationTitle']}</title>
-<link rel=stylesheet type="text/css" href="../css/bootstrap.css">
-<link rel=stylesheet type="text/css" href="../css/bootstrap-theme.css">
-<link rel=stylesheet type="text/css" href="../css/want2play.css">
+<link rel=stylesheet type="text/css" href="/css/bootstrap.css">
+<link rel=stylesheet type="text/css" href="/css/bootstrap-theme.css">
+<link rel=stylesheet type="text/css" href="/css/want2play.css">
 </head>
 <body>
 <!-- Intégration de la libraire jQuery --> 

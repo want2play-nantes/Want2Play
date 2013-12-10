@@ -38,8 +38,10 @@ public class IndexServlet extends HttpServlet {
 
 			List<Event> participations = new ArrayList<>();
 			
-			if (participant != null) {
-				for (Key k : participant.getEvents()) {
+			if (participant != null)
+			{
+				for (Key k : participant.getEvents())
+				{
 					participations.add(DatastoreController.getEventByKey(k));
 				}
 			}

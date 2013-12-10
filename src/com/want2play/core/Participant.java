@@ -41,7 +41,8 @@ public class Participant
 	
 	public void addEvent(Event e)
 	{
-		if (!events.contains(e)) {
+		if (!events.contains(e))
+		{
 			events.add(e.getKey());
 			e.getParticipants().add(getKey());
 		}

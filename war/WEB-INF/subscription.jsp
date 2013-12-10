@@ -22,7 +22,7 @@
 		Praesent dapibus felis nec arcu rhoncus viverra.</p>
 </div>
 <div id="subscription">
-	<form class="form-horizontal" role="form" action="/SubscriptionSave">
+	<form class="form-horizontal" role="form" action="/SaveSubscription" method="get">
 		<ul class="list-inline">
 			<c:forEach var="e" items="${sportsList}">
 				<li>

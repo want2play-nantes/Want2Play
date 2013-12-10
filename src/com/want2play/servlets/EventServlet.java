@@ -27,8 +27,10 @@ public class EventServlet extends HttpServlet {
 				Key key = KeyFactory.stringToKey(req.getParameter("event"));
 				
 				Event event = DatastoreController.getEventByKey(key);
+				log(event.getParticipants().toString());
 				
-				if (event != null) {
+				if (event != null)
+				{
 					req.setAttribute("event", event);
 				}
 			

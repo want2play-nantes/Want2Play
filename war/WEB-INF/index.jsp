@@ -54,12 +54,11 @@
 							<td><p class="list-group-item-text">${e.place}</p></td>
 							<td width="10%" class="text-right"><p class="list-group-item-text">${e.nbParticipants} / ${e.nbParticipantsMax}</p></td>
 							<td width="130px" class="text-right">
-								<a href="/Event?mode=edit&event=${e.keyStr}" role="button" class="btn btn-warning btn-xs">
+								<a href="/Event?event=${e.keyStr}&mode=edit" role="button" class="btn btn-warning btn-xs" title="Editer">
 									<span class="glyphicon glyphicon-pencil"></span>
 								</a>
 								&nbsp;&nbsp;
-								<!--<a href="/Event?mode=delete&event=${e.keyStr}" role="button" class="btn btn-danger btn-xs">-->
-								<a href="/DeleteEvent?mode=delete&event=${e.keyStr}" role="button" class="btn btn-danger btn-xs"  onclick="return confirm('Voulez-vous vraiment supprimer cette évènement?')">
+								<a href="/SaveEvent?event=${e.keyStr}&mode=delete" role="button" class="btn btn-danger btn-xs"  onclick="return confirm('Voulez-vous vraiment supprimer cette évènement ?')" title="Annuler">
 									<span class="glyphicon glyphicon-trash"></span>
 								</a>
 							</td>
@@ -87,7 +86,7 @@
 							<td><p class="list-group-item-text">${e.place}</p></td>
 							<td width="10%" class="text-right"><p class="list-group-item-text">${e.nbParticipants} / ${e.nbParticipantsMax}</p></td>
 							<td width="130px" class="text-right">
-								<a href="/Participation?event=${e.keyStr}&mode=delete" role="button" class="btn btn-danger btn-xs">Je ne participe plus</a>
+								<a href="/SaveParticipation?event=${e.keyStr}&mode=delete" role="button" class="btn btn-danger btn-xs">Je ne participe plus</a>
 							</td>
 						</tr>
 					</c:forEach>
@@ -115,7 +114,7 @@
 						<td><p class="list-group-item-text">${e.place}</p></td>
 						<td width="10%" class="text-right"><p class="list-group-item-text">${e.nbParticipants} / ${e.nbParticipantsMax}</p></td>
 						<td width="130px" class="text-right">
-							<a href="/Participation?event=${e.keyStr}&mode=add" role="button" class="btn btn-success btn-xs <c:if test="${e.nbParticipants >= e.nbParticipantsMax || empty user}">disabled</c:if>">Je participe</a>
+							<a href="/SaveParticipation?event=${e.keyStr}&mode=add" role="button" class="btn btn-success btn-xs <c:if test="${e.nbParticipants >= e.nbParticipantsMax || empty user}">disabled</c:if>">Je participe</a>
 						</td>
 					</tr>
 					</c:forEach>
