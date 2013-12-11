@@ -25,14 +25,15 @@
 </div>
 
 <form id="eventForm" class="form-horizontal" role="form" action="/SaveEvent" method="get">
+
 	<div class="form-group">
-		<label class="col-sm-3 control-label">Créateur</label>
-		<div class="col-sm-9"><p class="form-control-static">${user.email}</p></div>
+		<label class="col-sm-2 control-label">Créateur</label>
+		<div class="col-sm-10"><p class="form-control-static">${user.email}</p></div>
 	</div>
 
-	<div class="form-group" id="formGroupSport">
-		<label for="selectSport" class="col-sm-3 control-label">Sport</label>
-		<div class="col-sm-9">
+	<div class="form-group">
+		<label for="selectSport" class="col-sm-2 control-label">Sport</label>
+		<div class="col-sm-10">
 			<select 
 				class="form-control"
 				name="sport"
@@ -47,9 +48,10 @@
 			</select>
 		</div>
 	</div>
-	<div class="form-group" id="formGroupDate">
-		<label for="inputDate" class="col-sm-3 control-label">Date</label>
-		<div class="col-sm-9 input-group">
+	
+	<div class="form-group">
+		<label for="inputDate" class="col-sm-2 control-label">Date</label>
+		<div class="col-sm-10 input-group">
 			<div
 				class="bfh-datepicker"
 				data-min="<joda:format value="${now}" pattern="dd/MM/yyyy" />"
@@ -58,13 +60,13 @@
 				data-name="date"
 				data-date="<c:choose><c:when test="${not empty event}"><joda:format value="${event.date}" pattern="dd/MM/yyyy" /></c:when><c:otherwise><joda:format value="${now}" pattern="dd/MM/yyyy" /></c:otherwise></c:choose>"
 			>
-			
 			</div>
 		</div>
 	</div>
-	<div class="form-group" id="formGroupHeure">
-		<label for="inputHeure" class="col-sm-3 control-label">Heure</label>
-		<div class="col-sm-9 input-group">
+	
+	<div class="form-group">
+		<label for="inputHeure" class="col-sm-2 control-label">Heure</label>
+		<div class="col-sm-10 input-group">
 			<div
 				class="bfh-timepicker"
 				data-name="heure"
@@ -73,9 +75,12 @@
 			</div>
 		</div>
 	</div>
-	<div class="form-group" id="formGroupLieu">
-		<label for="inputLieu" class="col-sm-3 control-label">Lieu</label>
-		<div class="col-sm-9 input-group">
+	
+	<div class="form-group">
+		<label for="inputLieu" class="col-sm-2 control-label">Lieu</label>
+		
+		<div class="col-sm-10 input-group">
+			<span class="input-group-addon"><span class="glyphicon glyphicon-screenshot"></span></span>
 				<input type="text"
 					class="form-control"
 					value="<c:if test="${not empty event}">${event.place}</c:if>"
@@ -86,9 +91,10 @@
 				/>
 		</div>
 	</div>
-	<div class="form-group" id="formGroupPart">
-		<label for="inputParticipants" class="col-sm-3 control-label">Nombre de participants recherchés</label>
-		<div class="col-sm-9 input-group">
+	
+	<div class="form-group">
+		<label for="inputParticipants" class="col-sm-2 control-label">Participants</label>
+		<div class="col-sm-10 input-group">
 			<div class="bfh-slider"
 				data-name="nbPart"
 				data-value="<c:choose><c:when test="${not empty event}">${event.nbParticipantsMax}</c:when><c:otherwise>1</c:otherwise></c:choose>"
@@ -98,6 +104,7 @@
 			</div>
 		</div>
 	</div>
+	
 	<hr class="soften" />
 
 	<div class="form-group">
