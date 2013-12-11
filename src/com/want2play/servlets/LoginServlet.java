@@ -7,8 +7,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.want2play.core.Participant;
+import com.want2play.datastore.DatastoreController;
 
 @SuppressWarnings("serial")
 public class LoginServlet extends HttpServlet {
@@ -21,10 +24,21 @@ public class LoginServlet extends HttpServlet {
 		
 		if (!userService.isUserLoggedIn())
 		{
-	    	resp.sendRedirect(userService.createLoginURL(req.getHeader("Referer")));
+	    	resp.sendRedirect(userService.createLoginURL("/Login"));
 	    }
-		else {
-			resp.sendRedirect(req.getHeader("Referer"));
+		else
+		{
+			User user = userService.getCurrentUser();
+			
+			if (DatastoreController.getParticipantByUser(user) == null)
+			{
+				DatastoreController.saveParticipant(new Participant(user));
+			}
+			
+			// Amène des problèmes lors de rafraichissements
+			//req.getSession().setAttribute("user", user);
+			
+			resp.sendRedirect("/");
 		}
 	}
 }

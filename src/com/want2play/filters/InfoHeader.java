@@ -14,7 +14,7 @@ import org.joda.time.DateTime;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
-public class InfoHeaderUser implements Filter {
+public class InfoHeader implements Filter {
 
 	@Override
 	public void init(FilterConfig chain) throws ServletException
@@ -28,7 +28,8 @@ public class InfoHeaderUser implements Filter {
 	{
 		UserService userService = UserServiceFactory.getUserService();
 		
-		if(userService.isUserLoggedIn()) {
+		if(userService.isUserLoggedIn())
+		{
 			req.setAttribute("user", userService.getCurrentUser());
 			req.setAttribute("now", DateTime.now());
 		}

@@ -34,10 +34,11 @@ public class SaveEventServlet extends HttpServlet {
 		{
 			Event event = null;
 			
-			if (req.getParameter("mode").equals("edit") || req.getParameter("mode").equals("new")) {
+			if (req.getParameter("mode").equals("edit") || req.getParameter("mode").equals("new"))
+			{
 				User creator = UserServiceFactory.getUserService().getCurrentUser();
 				
-				DateTime date = DateTime.parse(req.getParameter("date"), DateTimeFormat.forPattern("yyyy-MM-dd"));
+				DateTime date = DateTime.parse(req.getParameter("date"), DateTimeFormat.forPattern("dd/MM/yyyy"));
 				DateTime hour = DateTime.parse(req.getParameter("heure"), DateTimeFormat.forPattern("H:mm"));
 				
 				if (date.isBefore(DateTime.now())) {

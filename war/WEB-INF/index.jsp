@@ -14,8 +14,7 @@
 		<div class="row">
 			<div class="spanSubscription well text-center">
 				<h2>Abonnement</h2>
-				<p>Vous voulez être tenu au courant lorsqu'une activité se crée à côté
-					de chez vous ?</p>
+				<p>Vous voulez être informé lorsqu'une activité se crée à côté de chez vous ?</p>
 				<p>Abonnez vous !</p>
 				<br /> <a href="/Subscription" role="button"
 					class="btn btn-success">S'abonner / Editer</a>

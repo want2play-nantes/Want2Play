@@ -26,10 +26,6 @@ public class SaveParticipationServlet extends HttpServlet {
 			try {
 				User user = UserServiceFactory.getUserService().getCurrentUser();
 				Event event = DatastoreController.getEventByKey(KeyFactory.stringToKey(req.getParameter("event")));
-
-				if (DatastoreController.getParticipantByUser(user) == null) {
-					DatastoreController.saveParticipant(new Participant(user));
-				}
 				
 				Participant participant = DatastoreController.getParticipantByUser(user);
 

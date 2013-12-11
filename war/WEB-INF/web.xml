@@ -20,12 +20,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     </context-param>
     
     <filter>
-    	<description>Permet d'obtenir des informations sur le status de l'utilisateur.</description>
-        <filter-name>InfoHeaderUser</filter-name>
-        <filter-class>com.want2play.filters.InfoHeaderUser</filter-class>
+        <filter-name>InfoHeader</filter-name>
+        <filter-class>com.want2play.filters.InfoHeader</filter-class>
 	</filter>
 	<filter-mapping>
-        	<filter-name>InfoHeaderUser</filter-name>
+        	<filter-name>InfoHeader</filter-name>
         	<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	

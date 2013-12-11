@@ -8,8 +8,9 @@
 <head>
 <meta charset="utf-8">
 <title>${initParam['applicationTitle']}</title>
-<link rel=stylesheet type="text/css" href="/css/bootstrap.css">
-<link rel=stylesheet type="text/css" href="/css/bootstrap-theme.css">
+<link rel=stylesheet type="text/css" href="/css/bootstrap.min.css">
+<link rel=stylesheet type="text/css" href="/css/bootstrap-formhelpers.min.css">
+<link rel=stylesheet type="text/css" href="/css/bootstrap-theme.min.css">
 <link rel=stylesheet type="text/css" href="/css/want2play.css">
 </head>
 <body>
@@ -17,7 +18,10 @@
 <script src="/js/jquery-2.0.2.min.js"></script>
 
 <!-- Intégration de la libraire de composants du Bootstrap --> 
-<script src="/js/bootstrap.js"></script> 
+<script src="/js/bootstrap.min.js"></script> 
+
+<!-- Bootstrap Form Helpers -->
+<script src="js/bootstrap-formhelpers.min.js"></script>
 
 <div id="wrapper">		
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
