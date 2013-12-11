@@ -1,5 +1,10 @@
 @CHARSET "UTF-8";
 
+/*
+ * Correctif Bootstrap pour Internet Explorer 10 (IE ? Ca existe encore ?...)
+ */
+@-ms-viewport       { width: device-width; }
+
 * {
 	margin: 0;
 	padding: 0;

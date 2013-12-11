@@ -95,8 +95,7 @@ public class Mail {
 		content = content.replace("#date#", DateTimeFormat.forPattern("EEEE dd MMMM yyyy").withLocale(Locale.FRANCE).print(e.getDate()));
 		content = content.replace("#heure#", DateTimeFormat.forPattern("HH:mm").withLocale(Locale.FRANCE).print(e.getHour()));
 		content = content.replace("#lieu#", e.getPlace());
-		content = content.replace("#nbParticipants#", e.getNbParticipantsMax()
-				.toString());
+		content = content.replace("#nbParticipants#", e.getNbParticipantsMax().toString());
 
 		String subject = "Want2Play : Nouvelle activite !";
 
@@ -130,6 +129,7 @@ public class Mail {
 		content = content.replace("#date#", DateTimeFormat.forPattern("EEEE dd MMMM yyyy").withLocale(Locale.FRANCE).print(e.getDate()));
 		content = content.replace("#heure#", DateTimeFormat.forPattern("HH:mm").withLocale(Locale.FRANCE).print(e.getHour()));
 		content = content.replace("#lieu#", e.getPlace());
+		content = content.replace("#nbParticipants#", e.getNbParticipantsMax().toString());
 
 		String subject = "Want2Play : Activite modifiee !";
 		
