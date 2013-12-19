@@ -34,14 +34,14 @@ public class SaveParticipationServlet extends HttpServlet {
 					participant.removeEvent(event);
 					DatastoreController.updateParticipant(participant);
 					DatastoreController.updateEvent(event);
-					log("Participation supprimée");
+					log("Suppression de la participation (" + user.getEmail() + " -> " + event.getKey() + ") : Success");
 				}
 				else if (req.getParameter("mode").equals("add")	&& event.getNbParticipants() < event.getNbParticipantsMax())
 				{
 					participant.addEvent(event);
 					DatastoreController.updateParticipant(participant);
 					DatastoreController.updateEvent(event);
-					log("Participation crée");
+					log("Création de la participation (" + user.getEmail() + " -> " + event.getKey() + ") : Success");
 				}
 			}
 			catch (Exception e)

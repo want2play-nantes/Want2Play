@@ -53,7 +53,7 @@ public class Mail {
 
 			if (users.isEmpty())
 			{
-				sc.log("Aucun destinataire pour la notification de " + subject);
+				sc.log("Envoi notification : Aucun destinataire");
 				return false;
 			}
 
@@ -72,11 +72,13 @@ public class Mail {
 			message.setContent(content, "text/html; charset=utf-8");
 
 			Transport.send(message);
+			sc.log("Envoi notification : Success");
 			return true;
 		}
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
+			sc.log("Envoi notification : Failed");
 			return false;
 		}
 	}
@@ -89,13 +91,9 @@ public class Mail {
 	 */
 	public static boolean sendMailNewEvent(ServletContext sc, Event e)
 	{
-		String content = readFile(sc, "newEvent.html");
+		String content = readTemplate(sc, "newEvent.html");
 
-		content = content.replace("#sport#", e.getSport().getLabel());
-		content = content.replace("#date#", DateTimeFormat.forPattern("EEEE dd MMMM yyyy").withLocale(Locale.FRANCE).print(e.getDate()));
-		content = content.replace("#heure#", DateTimeFormat.forPattern("HH:mm").withLocale(Locale.FRANCE).print(e.getHour()));
-		content = content.replace("#lieu#", e.getPlace());
-		content = content.replace("#nbParticipants#", e.getNbParticipantsMax().toString());
+		replaceKeys(content, e);
 
 		String subject = "Want2Play : Nouvelle activite !";
 
@@ -104,12 +102,9 @@ public class Mail {
 
 	public static boolean sendMailCancelledEvent(ServletContext sc, Event e)
 	{
-		String content = readFile(sc, "deletedEvent.html");
-
-		content = content.replace("#sport#", e.getSport().getLabel());
-		content = content.replace("#date#", DateTimeFormat.forPattern("EEEE dd MMMM yyyy").withLocale(Locale.FRANCE).print(e.getDate()));
-		content = content.replace("#heure#", DateTimeFormat.forPattern("HH:mm").withLocale(Locale.FRANCE).print(e.getHour()));
-		content = content.replace("#lieu#", e.getPlace());
+		String content = readTemplate(sc, "deletedEvent.html");
+		
+		replaceKeys(content, e);
 
 		String subject = "Want2Play : Activite annulee !";
 
@@ -123,27 +118,38 @@ public class Mail {
 
 	public static boolean sendMailEditEvent(ServletContext sc, Event e)
 	{
-		String content = readFile(sc, "editEvent.html");
+		String content = readTemplate(sc, "editEvent.html");
 
-		content = content.replace("#sport#", e.getSport().getLabel());
-		content = content.replace("#date#", DateTimeFormat.forPattern("EEEE dd MMMM yyyy").withLocale(Locale.FRANCE).print(e.getDate()));
-		content = content.replace("#heure#", DateTimeFormat.forPattern("HH:mm").withLocale(Locale.FRANCE).print(e.getHour()));
-		content = content.replace("#lieu#", e.getPlace());
-		content = content.replace("#nbParticipants#", e.getNbParticipantsMax().toString());
+		replaceKeys(content, e);
 
 		String subject = "Want2Play : Activite modifiee !";
 		
 		List<User> users = new ArrayList<>();
 		for (Participant p : DatastoreController.getParticipantsByEvent(e))
 		{
-			sc.log(p.toString());
 			users.add(p.getUser());
 		}
 
 		return sendMail(sc, users, e, subject, content);
 	}
+	
+	private static String replaceKeys(String content, Event e)
+	{
+		content = content.replace("#sport#", e.getSport().getLabel());
+		content = content.replace("#date#", DateTimeFormat.forPattern("EEEE dd MMMM yyyy").withLocale(Locale.FRANCE).print(e.getDate()));
+		content = content.replace("#heure#", DateTimeFormat.forPattern("HH:mm").withLocale(Locale.FRANCE).print(e.getHour()));
+		content = content.replace("#lieu#", e.getPlace());
+		
+		// Certaines notifications n'affichent pas le nombre de participants
+		try {
+			content = content.replace("#nbParticipants#", e.getNbParticipantsMax().toString());
+		}
+		catch(NullPointerException ex) {}
+		
+		return content;
+	}
 
-	private static String readFile(ServletContext sc, String filename)
+	private static String readTemplate(ServletContext sc, String filename)
 	{
 		StringBuilder mailSb = new StringBuilder();
 

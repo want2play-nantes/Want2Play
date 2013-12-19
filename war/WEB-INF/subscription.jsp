@@ -49,12 +49,20 @@
 			</div>
 		</div>
 		
-		<c:if test="${param.resp == 1}">
+		<c:choose>
+		<c:when test="${not empty param.resp && param.resp == 1}">
 			<div class="alert alert-success alert-dismissable">
 			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 			Modifications enregistrée avec succès.
 			</div>
-		</c:if>
+		</c:when>
+		<c:when test="${not empty param.resp && param.resp == 0}">
+			<div class="alert alert-danger alert-dismissable">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			Un problème est survenu lors de l'enregistrement. Veuillez réessayer. Si le problème persiste, merci de contacter l'administrateur.
+			</div>
+		</c:when>
+		</c:choose>
 	</form>
 </div>
 

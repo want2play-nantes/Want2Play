@@ -27,13 +27,13 @@ public class SubscriptionServlet extends HttpServlet {
 		Subscriptions subs;
 		if (DatastoreController.isSubscribedUser(user))
 		{
+			log("Utilisateur abonné : Modification de l'abonnement");
 			subs = DatastoreController.getSubscriptionsByUser(user);
-			log("Utilisateur abonné -> Modification");
 		}
 		else
 		{
+			log("Utilisateur non abonnée : Nouvel abonnement");
 			subs = new Subscriptions(user);
-			log("Utilisateur non abonnée -> Enregistrement");
 		}
 		
 		req.setAttribute("subs", subs);

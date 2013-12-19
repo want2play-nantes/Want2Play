@@ -25,23 +25,30 @@ public class SaveSubscriptionServlet extends HttpServlet {
 		User user = userService.getCurrentUser();
 
 		Subscriptions subs;
+		
+		boolean updateSuccess = false, saveSuccess = false;
 
-		if (DatastoreController.isSubscribedUser(user)) {
+		if (DatastoreController.isSubscribedUser(user))
+		{
 			subs = DatastoreController.getSubscriptionsByUser(user);
 
 			processParameters(req, subs);
 
-			log("Abonnement : Mise à jour dans le DS");
-			DatastoreController.updateSubscription(subs);
-		} else {
+			updateSuccess = DatastoreController.updateSubscription(subs);
+			
+			log("Mise à jour de l'abonnement (" + subs.getKey() + ") : " + (updateSuccess ? "Success" : "Failed"));
+		}
+		else
+		{
 			subs = new Subscriptions(user);
-
 			processParameters(req, subs);
 
-			log("Abonnement : Enregistrement dans le DS");
-			DatastoreController.saveSubscription(subs);
+			saveSuccess = DatastoreController.saveSubscription(subs);
+			
+			log("Création de l'abonnement (" + subs.getKey() + ") : " + (saveSuccess ? "Success" : "Failed"));
 		}
-		resp.sendRedirect("/Subscription?resp=1");
+		
+		resp.sendRedirect("/Subscription?" + ((saveSuccess || updateSuccess) ? "resp=1" : "resp=0"));
 	}
 
 	private Subscriptions processParameters(HttpServletRequest req,

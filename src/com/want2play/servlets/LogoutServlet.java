@@ -18,6 +18,8 @@ public class LogoutServlet extends HttpServlet {
 			throws ServletException, IOException
 	{
 		UserService userService = UserServiceFactory.getUserService();
+		
+		log("Deconnexion : " + userService.getCurrentUser().getEmail());
 		req.getSession().invalidate();
 		resp.sendRedirect(userService.createLogoutURL("/"));
 	}

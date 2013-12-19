@@ -59,12 +59,12 @@ public class SaveEventServlet extends HttpServlet {
 					
 					if (DatastoreController.updateEvent(event))
 					{
-						boolean mailSuccess = Mail.sendMailEditEvent(getServletContext(), event);
-						log("Mise à jour de l'évènement: " + true + " | Envoi mail: " + mailSuccess);
+						log("Mise à jour de l'évènement (" + event.getKey() + ") : Success");
+						Mail.sendMailEditEvent(getServletContext(), event);
 					}
 					else
 					{
-						log("Echec de la mise à jour de l'évènement");
+						log("Mise à jour de l'évènement (" + event.getKey() + ") : Failed");
 					}
 				}
 				else if (req.getParameter("mode").equals("new"))
@@ -75,12 +75,12 @@ public class SaveEventServlet extends HttpServlet {
 					
 					if (DatastoreController.saveEvent(event))
 					{
-						boolean mailSuccess = Mail.sendMailNewEvent(getServletContext(), event);
-						log("Création de l'évènement: " + true + " | Envoi mail: " + mailSuccess);
+						log("Création de l'évènement (" + event.getKey() + ") : Success");
+						Mail.sendMailNewEvent(getServletContext(), event);
 					}
 					else
 					{
-						log("Echec de l'enregistrement de l'évènement");
+						log("Création de l'évènement (" + event.getKey() + ") : Failed");
 					}
 				}
 			}
@@ -90,15 +90,14 @@ public class SaveEventServlet extends HttpServlet {
 				
 				event = DatastoreController.getEventByKey(key);
 				
-				boolean mailSuccess = Mail.sendMailCancelledEvent(getServletContext(), event);
-				
 				if (DatastoreController.deleteEvent(event))
 				{
-					log("Suppression de l'évènement :" + true + " | Envoi mail: "+ mailSuccess);					
+					log("Suppression de l'évènement (" + event.getKey() + ") : Success");		
+					Mail.sendMailCancelledEvent(getServletContext(), event);
 				}
 				else
 				{
-					log("Echec de la suppression de l'évènement");
+					log("Suppression de l'évènement (" + event.getKey() + ") : Failed");
 				}
 			}
 			else

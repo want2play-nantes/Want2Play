@@ -24,11 +24,13 @@ public class LoginServlet extends HttpServlet {
 		
 		if (!userService.isUserLoggedIn())
 		{
+			log("Utilisateur inconnu : Redirection vers la page de connexion");
 	    	resp.sendRedirect(userService.createLoginURL("/Login"));
 	    }
 		else
 		{
 			User user = userService.getCurrentUser();
+			log("Utilisateur authentifié : " + user.getEmail());
 			
 			if (DatastoreController.getParticipantByUser(user) == null)
 			{
